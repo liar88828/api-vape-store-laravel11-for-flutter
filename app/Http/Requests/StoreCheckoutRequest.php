@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
-class UpdateProductRequest extends FormRequest
+class StoreCheckoutRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -19,21 +19,20 @@ class UpdateProductRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, ValidationRule|array<mixed>|string>
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            'name' => 'required',
-            'qty' => 'required',
-            'price' => 'required',
-            'describe' => 'required',
-            'id_user' => 'required',
+            'total'=>'required',
+            'delivery'=>'required',
+            'payment'=>'required',
+            'id_user'=>'required',
         ];
     }
-    public function failedValidation(Validator $validator)
+    public function failedValidation(Validator  $validator)
     {
-        throw new \HttpResponseException(response()->json([
+        throw new HttpResponseException(response()->json([
             'success'   => false,
             'message'   => 'Validation errors',
             'data'      => $validator->errors()

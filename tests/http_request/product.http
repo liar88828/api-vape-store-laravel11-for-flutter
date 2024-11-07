@@ -1,29 +1,38 @@
 @api= http://localhost:8000/api
+@path= product
 
 ### GET ALL DATA
-GET {{api}}/products
+GET {{api}}/{{path}}
 
 ### GET ID DATA
-GET {{api}}/products/4
+GET {{api}}/{{path}}/1
 
 ### CREATE DATA
-POST {{api}}/products
+POST {{api}}/{{path}}
 Content-Type: application/json
 
 {
-    "name": "buku",
-    "details": "iki buku"
+    "name": "test buku",
+    "qty": 1,
+    "price": 123,
+    "id_user": 1,
+    "describe": "s simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"
+
 }
 
 ### UPDATE DATA
-PUT {{api}}/products/4
+PUT {{api}}/{{path}}/4
 Content-Type: application/json
 
 {
-    "name": "buku update",
-    "details": "iki buku"
+    "name": "test buku update",
+    "qty": 1,
+    "price": 123,
+    "id_user": 1,
+    "describe": "s simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"
+
 }
 
 ### DELETE DATA
-DELETE {{api}}/products/4
+DELETE {{api}}/{{path}}/4
 

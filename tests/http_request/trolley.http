@@ -1,0 +1,25 @@
+@api= http://localhost:8000/api
+@path = trolley
+
+### GET ALL DATA
+GET {{api}}/{{path}}
+Content-Type: application/json
+
+### GET ID DATA
+GET {{api}}/{{path}}/1
+Content-Type: application/json
+
+### UPDATE DATA
+PUT {{api}}/{{path}}/10123
+Content-Type: application/json
+
+{
+    "qty": 123,
+    "id_checkout": null,
+    "id_product": 1,
+    "id_user": 1
+}
+
+### DELETE DATA
+DELETE {{api}}/{{path}}/1
+

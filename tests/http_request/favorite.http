@@ -1,0 +1,23 @@
+@api= http://localhost:8000/api
+@path=favorite
+
+### GET ALL DATA
+GET {{api}}/{{path}}
+
+### GET ID DATA
+GET {{api}}/{{path}}/4
+
+### CREATE DATA
+PUT {{api}}/{{path}}/14
+Content-Type: application/json
+
+{
+    "id_user": "1",
+    "id_product": "1",
+    "title": "animal",
+    "description": "is animal art"
+}
+
+### DELETE DATA
+DELETE {{api}}/{{path}}/12
+

@@ -11,7 +11,7 @@ class ApiResponseClass
     public static function rollback($e, $message ="Something went wrong! Process not completed"){
         DB::rollBack();
         self::throw($e, $message);
-//        return false
+        return false;
     }
 
     public static function throw($e, $message ="Something went wrong! Process not completed"){

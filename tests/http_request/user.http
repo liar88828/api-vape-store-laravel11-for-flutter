@@ -1,0 +1,29 @@
+@api= http://localhost:8000/api
+@path= user
+### GET ALL DATA
+GET {{api}}/{{path}}
+
+### GET ID DATA
+GET {{api}}/{{path}}/4
+
+### CREATE DATA
+POST {{api}}/{{path}}
+Content-Type: application/json
+
+{
+    "name": "buku",
+    "details": "iki buku"
+}
+
+### UPDATE DATA
+PUT {{api}}/{{path}}/4
+Content-Type: application/json
+
+{
+    "name": "buku update",
+    "details": "iki buku"
+}
+
+### DELETE DATA
+DELETE {{api}}/{{path}}/4
+

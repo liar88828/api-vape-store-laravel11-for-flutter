@@ -44,14 +44,17 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        $details = [
-            'name' => $request->name,
-            'details' => $request->details
-        ];
-//        print_r($details);
 
-        DB::beginTransaction();
         try {
+            $details = [
+                'name' => $request->name,
+                'qty' => $request->qty,
+                'price' => $request->price,
+                'describe' => $request->describe,
+                'id_user' => $request->id_user
+            ];
+
+            DB::beginTransaction();
             $product = $this->productRepository->store($details);
 
             DB::commit();
@@ -68,7 +71,6 @@ class ProductController extends Controller
     public function show($id)
     {
         try {
-
             $product = $this->productRepository->getById($id);
             return ApiResponseClass::sendResponse(new ProductResource($product), '', 200);
         } catch (\Exception $ex) {
@@ -91,18 +93,24 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, $id)
     {
-        $updateDetails = [
-            'name' => $request->name,
-            'details' => $request->details
-        ];
-        DB::beginTransaction();
+
         try {
-            $product = $this->productRepository->update($updateDetails, $id);
+            $details = [
+                'name' => $request->name,
+                'qty' => $request->qty,
+                'price' => $request->price,
+                'describe' => $request->describe,
+                'id_user' => $request->id_user
+            ];
+            DB::beginTransaction();
+            $product = $this->productRepository->update($details, $id);
 
             DB::commit();
             return ApiResponseClass::sendResponse('Product Update Successful', '', 201);
 
         } catch (\Exception $ex) {
+//            DB::disconnect();
+
             return ApiResponseClass::rollback($ex);
         }
     }
