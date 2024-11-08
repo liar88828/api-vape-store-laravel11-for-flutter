@@ -19,16 +19,16 @@ class UpdateProductRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
-            'name' => 'required',
-            'qty' => 'required',
-            'price' => 'required',
-            'describe' => 'required',
-            'id_user' => 'required',
+            'id_user' => 'required|integer',
+            'name' => 'required|string',
+            'qty' => 'required|integer',
+            'price' => 'required|integer',
+            'description' => 'required|string',
         ];
     }
     public function failedValidation(Validator $validator)

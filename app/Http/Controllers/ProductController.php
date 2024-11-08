@@ -50,7 +50,7 @@ class ProductController extends Controller
                 'name' => $request->name,
                 'qty' => $request->qty,
                 'price' => $request->price,
-                'describe' => $request->describe,
+                'description' => $request->description,
                 'id_user' => $request->id_user
             ];
 
@@ -99,7 +99,7 @@ class ProductController extends Controller
                 'name' => $request->name,
                 'qty' => $request->qty,
                 'price' => $request->price,
-                'describe' => $request->describe,
+                'description' => $request->description,
                 'id_user' => $request->id_user
             ];
             DB::beginTransaction();

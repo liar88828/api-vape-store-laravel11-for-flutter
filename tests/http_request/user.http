@@ -1,28 +1,31 @@
 @api= http://localhost:8000/api
-@path= user
+@path= auth
 ### GET ALL DATA
-GET {{api}}/{{path}}
+POST {{api}}//tokens/create
 
-### GET ID DATA
-GET {{api}}/{{path}}/4
+### GET ALL DATA
+GET {{api}}/{{path}}/user
 
-### CREATE DATA
-POST {{api}}/{{path}}
+### REGISTER DATA
+POST {{api}}/{{path}}/register
 Content-Type: application/json
 
 {
-    "name": "buku",
-    "details": "iki buku"
+    "name": "user6",
+    "email": "user7@gmail.com",
+    "password": "user12345",
+    "password_confirmation": "user12345"
 }
 
 ### UPDATE DATA
-PUT {{api}}/{{path}}/4
+POST {{api}}/{{path}}/login
 Content-Type: application/json
 
 {
-    "name": "buku update",
-    "details": "iki buku"
+    "email": "user1@gmail.com",
+    "password": "user12345"
 }
+
 
 ### DELETE DATA
 DELETE {{api}}/{{path}}/4

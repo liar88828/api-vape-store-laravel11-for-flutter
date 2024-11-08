@@ -12,19 +12,26 @@ POST {{api}}/{{path}}
 Content-Type: application/json
 
 {
-    "name": "buku",
-    "details": "iki buku"
+    "id_user": 1,
+    "total": 200,
+    "delivery_price": 23,
+    "payment_price": 23,
+    "payment_method": "mandiri",
+    "delivery_method": "jnt"
 }
 
 ### UPDATE DATA
-PUT {{api}}/{{path}}/4
+PUT {{api}}/{{path}}/1
 Content-Type: application/json
 
 {
-    "name": "buku update",
-    "details": "iki buku"
+    "id_user": 1,
+    "total": 200,
+    "delivery_price": 23,
+    "payment_price": 23,
+    "payment_method": "mandiri update",
+    "delivery_method": "jnt"
 }
-
 ### DELETE DATA
 DELETE {{api}}/{{path}}/4
 

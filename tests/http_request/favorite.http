@@ -13,11 +13,11 @@ Content-Type: application/json
 
 {
     "id_user": "1",
-    "id_product": "1",
+    "id_product": "2",
     "title": "animal",
     "description": "is animal art"
 }
 
 ### DELETE DATA
-DELETE {{api}}/{{path}}/12
+DELETE {{api}}/{{path}}/4
 

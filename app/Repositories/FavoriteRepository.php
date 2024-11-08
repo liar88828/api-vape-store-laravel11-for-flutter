@@ -30,6 +30,7 @@ class FavoriteRepository implements FavoriteRepositoryInterface
         } else {
               Favorite::destroy($id);
         }
+        return false;
     }
 
     public function removeId(int $id)

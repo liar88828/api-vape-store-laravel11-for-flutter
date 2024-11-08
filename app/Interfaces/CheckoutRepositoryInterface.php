@@ -2,11 +2,13 @@
 
 namespace App\Interfaces;
 
+use App\Models\Checkout;
+
 interface CheckoutRepositoryInterface
 {
     public function findAll();
-    public function findId($id);
+    public function findId(int  $id);
     public function create(array $data);
-    public function update(array $data,$id);
-    public function delete($id);
+    public function update(array $data, int $id);
+    public function delete(int  $id);
 }

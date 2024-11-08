@@ -16,7 +16,7 @@ Content-Type: application/json
     "qty": 1,
     "price": 123,
     "id_user": 1,
-    "describe": "s simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"
+    "description": "s simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"
 
 }
 
@@ -29,10 +29,10 @@ Content-Type: application/json
     "qty": 1,
     "price": 123,
     "id_user": 1,
-    "describe": "s simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"
+    "description": "s simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"
 
 }
 
 ### DELETE DATA
-DELETE {{api}}/{{path}}/4
+DELETE {{api}}/{{path}}/1
 

@@ -87,7 +87,7 @@ class FavoriteController extends Controller
 
             DB::beginTransaction();
             $product = $this->favoriteRepository->addId($id, $favorite);
-            print_r($product);
+//            print_r($product);
             DB::commit();
             return ApiResponseClass::sendResponse(new FavoriteResource($product), 'Trolley Create Successful', 201);
 

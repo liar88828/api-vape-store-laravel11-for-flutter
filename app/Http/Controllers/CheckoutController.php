@@ -52,20 +52,23 @@ class CheckoutController extends Controller
     public function store(StoreCheckoutRequest $request)
     {
         $checkout = [
-            'total' => $request->total,
-            'delivery' => $request->delivery,
-            'payment' => $request->payment,
             'id_user' => $request->id_user,
+            'total' => $request->total,
+            'payment_method' => $request->payment_method,
+            'payment_price' => $request->payment_price,
+            'delivery_method' => $request->delivery_method,
+            'delivery_price' => $request->delivery_price,
         ];
-
-        DB::beginTransaction();
         try {
+            DB::beginTransaction();
             $data = $this->checkoutRepository->create($checkout);
             DB::commit();
             return ApiResponseClass::sendResponse(new CheckoutResource($data), 'Checkout Create Successful', 201);
 
         } catch (\Exception $ex) {
-            return ApiResponseClass::rollback($ex);
+//            return ApiResponseClass::rollback($ex);
+            return ApiResponseClass::sendResponse('Checkout Create Fail', $ex, 404);
+
         }
     }
 
@@ -79,7 +82,7 @@ class CheckoutController extends Controller
             $data = $this->checkoutRepository->findId($id);
             return ApiResponseClass::sendResponse(new CheckoutResource($data), 'success', 200);
         } catch (Exception $e) {
-            return ApiResponseClass::sendResponse('Check Delete Fail', '', 404);
+            return ApiResponseClass::sendResponse('Checkout Delete Fail', '', 404);
         }
     }
 
@@ -98,10 +101,12 @@ class CheckoutController extends Controller
     {
         try {
             $checkout = [
-                'total' => $request->total,
-                'delivery' => $request->delivery,
-                'payment' => $request->payment,
                 'id_user' => $request->id_user,
+                'total' => $request->total,
+                'payment_method' => $request->payment_method,
+                'payment_price' => $request->payment_price,
+                'delivery_method' => $request->delivery_method,
+                'delivery_price' => $request->delivery_price,
             ];
             DB::beginTransaction();
             $this->checkoutRepository->update($checkout, $id);
@@ -109,7 +114,9 @@ class CheckoutController extends Controller
             return ApiResponseClass::sendResponse('Checkout Update Successful', '', 201);
 
         } catch (Exception $e) {
-            return ApiResponseClass::rollback($e);
+//            return ApiResponseClass::rollback($e);
+            return ApiResponseClass::sendResponse('Checkout Update Fail', $e, 404);
+
         }
     }
 

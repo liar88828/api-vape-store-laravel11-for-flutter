@@ -16,10 +16,10 @@ Content-Type: application/json
 {
     "qty": 123,
     "id_checkout": null,
-    "id_product": 1,
+    "id_product": 2,
     "id_user": 1
 }
 
 ### DELETE DATA
-DELETE {{api}}/{{path}}/1
+DELETE {{api}}/{{path}}/3
 

@@ -24,10 +24,10 @@ class UpdateTrolleyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'qty'=>'required',
 //            'id_checkout'=>'required',
-            'id_product'=>'required',
-            'id_user'=>'required',
+            'id_product'=>'required|integer',
+            'id_user'=>'required|integer',
+            'qty'=>'required|integer',
         ];
     }
     public function failedValidation(Validator  $validator)

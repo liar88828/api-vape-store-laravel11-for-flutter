@@ -31,7 +31,6 @@ class TrolleyRepository implements TrolleyRepositoryInterface
         $response = Trolley::query()
             ->where('id', '=', $id)
             ->get();
-//        print_r("- is empty : {$response->isEmpty()}");
 
         if ($response->isEmpty()) {
             Trolley::query()->create($data);

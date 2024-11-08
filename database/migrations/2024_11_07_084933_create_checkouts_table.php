@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('checkouts', function (Blueprint $table) {
             $table->id();
-            $table->integer('total');
-            $table->integer('payment');
-            $table->integer('delivery');
             $table->unsignedBigInteger('id_user');
+            $table->integer('total');
+            $table->string('payment_method');
+            $table->integer('payment_price');
+            $table->string('delivery_method');
+            $table->integer('delivery_price');
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });

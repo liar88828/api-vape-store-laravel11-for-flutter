@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -19,15 +20,15 @@ class UpdateFavoriteRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
-            'id_user'=>'required',
-            'id_product'=>'required',
-            'title'=>'required',
-            'description'=>'required',
+            'id_user'=>'required|integer',
+            'id_product'=>'required|integer',
+            'title'=>'required|string',
+            'description'=>'required|string',
         ];
     }
 

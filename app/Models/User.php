@@ -9,6 +9,13 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
+
+    //property
+    public int $id;
+    public string $name;
+    public string $email;
+    public string $password;
+
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
@@ -28,8 +35,8 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+//        'password',
     protected $hidden = [
-        'password',
         'remember_token',
     ];
 
