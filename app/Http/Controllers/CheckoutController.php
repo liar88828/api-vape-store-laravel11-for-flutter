@@ -51,18 +51,18 @@ class CheckoutController extends Controller
      */
     public function store(StoreCheckoutRequest $request)
     {
-        $checkout = [
-            'id_user' => $request->id_user,
-            'total' => $request->total,
-            'payment_method' => $request->payment_method,
-            'payment_price' => $request->payment_price,
-            'delivery_method' => $request->delivery_method,
-            'delivery_price' => $request->delivery_price,
-        ];
         try {
-            DB::beginTransaction();
+            $checkout = [
+                'id_user' => $request->id_user,
+                'total' => $request->total,
+                'payment_method' => $request->payment_method,
+                'payment_price' => $request->payment_price,
+                'delivery_method' => $request->delivery_method,
+                'delivery_price' => $request->delivery_price,
+            ];
+//            DB::beginTransaction();
             $data = $this->checkoutRepository->create($checkout);
-            DB::commit();
+//            DB::commit();
             return ApiResponseClass::sendResponse(new CheckoutResource($data), 'Checkout Create Successful', 201);
 
         } catch (\Exception $ex) {
@@ -78,7 +78,6 @@ class CheckoutController extends Controller
     public function show($id)
     {
         try {
-
             $data = $this->checkoutRepository->findId($id);
             return ApiResponseClass::sendResponse(new CheckoutResource($data), 'success', 200);
         } catch (Exception $e) {
@@ -108,9 +107,9 @@ class CheckoutController extends Controller
                 'delivery_method' => $request->delivery_method,
                 'delivery_price' => $request->delivery_price,
             ];
-            DB::beginTransaction();
+//            DB::beginTransaction();
             $this->checkoutRepository->update($checkout, $id);
-            DB::commit();
+//            DB::commit();
             return ApiResponseClass::sendResponse('Checkout Update Successful', '', 201);
 
         } catch (Exception $e) {

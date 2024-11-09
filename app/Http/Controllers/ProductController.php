@@ -54,11 +54,11 @@ class ProductController extends Controller
                 'id_user' => $request->id_user
             ];
 
-            DB::beginTransaction();
+//            DB::beginTransaction();
             $product = $this->productRepository->store($details);
 
-            DB::commit();
-            return ApiResponseClass::sendResponse(new ProductResource($product), 'Product Create Successful', 201);
+//            DB::commit();
+            return ApiResponseClass::sendResponse(new ProductResource($product), 'Product Create Successful', 200);
 
         } catch (\Exception $ex) {
             return ApiResponseClass::rollback($ex);
@@ -74,7 +74,7 @@ class ProductController extends Controller
             $product = $this->productRepository->getById($id);
             return ApiResponseClass::sendResponse(new ProductResource($product), '', 200);
         } catch (\Exception $ex) {
-            return ApiResponseClass::sendResponse("The Data Product is not found $id", '', 404);
+            return ApiResponseClass::sendFail("The Data Product is not found $id", $ex, 404);
 
         }
 
@@ -102,36 +102,29 @@ class ProductController extends Controller
                 'description' => $request->description,
                 'id_user' => $request->id_user
             ];
-            DB::beginTransaction();
+//            DB::beginTransaction();
             $product = $this->productRepository->update($details, $id);
 
-            DB::commit();
-            return ApiResponseClass::sendResponse('Product Update Successful', '', 201);
+//            DB::commit();
+            return ApiResponseClass::sendResponse('Product Update Successful', '', 200);
 
         } catch (\Exception $ex) {
 //            DB::disconnect();
 
-            return ApiResponseClass::rollback($ex);
+            return ApiResponseClass::sendFail('The Product is fail', $ex, 404);
         }
     }
 
     /**
-     * Remove the specified resource from storage.
+     * this destroy cant delete table because that value is relational with other table. if you want delete that table you must be delete other data  relational with this table (favorite, trolley)
      */
     public function destroy($id)
     {
         try {
-            $response = $this->productRepository->delete($id);
-            if ($response) {
-
-                return ApiResponseClass::sendResponse('Product Delete Successful', '', 204);
-            } else {
-                return ApiResponseClass::sendResponse('The Data Product is not found', '', 404);
-            }
-
+            $this->productRepository->delete($id);
+            return ApiResponseClass::sendResponse('Product Delete Successful', '', 200);
         } catch (\Exception $ex) {
-            return ApiResponseClass::sendResponse('Product Delete Fail', '', 404);
+            return ApiResponseClass::sendFail('Product Delete Fail', $ex->getMessage(), 404);
         }
-
     }
 }

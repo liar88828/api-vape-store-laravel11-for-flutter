@@ -11,8 +11,8 @@ POST {{api}}/{{path}}/register
 Content-Type: application/json
 
 {
-    "name": "user6",
-    "email": "user7@gmail.com",
+    "name": "user19",
+    "email": "user19@gmail.com",
     "password": "user12345",
     "password_confirmation": "user12345"
 }

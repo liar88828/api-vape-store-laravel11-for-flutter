@@ -29,4 +29,15 @@ class ApiResponseClass
         }
         return response()->json($response, $code);
     }
+
+    public static function sendFail($result , $message , $code=200){
+        $response=[
+            'success' => false,
+            'data'    => $result
+        ];
+        if(!empty($message)){
+            $response['message'] =$message;
+        }
+        return response()->json($response, $code);
+    }
 }

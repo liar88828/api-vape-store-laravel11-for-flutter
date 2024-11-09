@@ -21,7 +21,7 @@ Content-Type: application/json
 }
 
 ### UPDATE DATA
-PUT {{api}}/{{path}}/4
+PUT {{api}}/{{path}}/1
 Content-Type: application/json
 
 {
@@ -34,5 +34,6 @@ Content-Type: application/json
 }
 
 ### DELETE DATA
-DELETE {{api}}/{{path}}/1
+DELETE {{api}}/{{path}}/21
+Content-Type: application/json
 

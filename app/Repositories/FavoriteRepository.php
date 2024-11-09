@@ -23,19 +23,24 @@ class FavoriteRepository implements FavoriteRepositoryInterface
     {
 
         $response = Favorite::query()
-            ->where('id','=', $id)
+            ->where('id', '=', $id)
             ->get();
         if ($response->isEmpty()) {
             return Favorite::query()->create($data);
         } else {
-              Favorite::destroy($id);
+            Favorite::destroy($id);
         }
         return false;
     }
 
     public function removeId(int $id)
     {
-          Favorite::destroy($id);
+        $response = Favorite::destroy($id);
+        if ($response == '0') {
+            throw  new \Exception('fail delete favorite');
+        } else {
+            return true;
+        }
 
     }
 }

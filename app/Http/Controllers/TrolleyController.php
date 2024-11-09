@@ -89,10 +89,10 @@ class TrolleyController extends Controller
                 'id_user' => $request->id_user,
             ];
 //print_r($trolley);
-            DB::beginTransaction();
+//            DB::beginTransaction();
             $this->trolleyRepository->update($trolley, $id);
 
-            DB::commit();
+//            DB::commit();
             return ApiResponseClass::sendResponse('Trolley Update Successful', '', 201);
 
         } catch (\Exception $ex) {

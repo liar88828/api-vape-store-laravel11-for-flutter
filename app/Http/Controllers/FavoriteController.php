@@ -85,11 +85,11 @@ class FavoriteController extends Controller
                 'description' => $request->description,
             ];
 
-            DB::beginTransaction();
+//            DB::beginTransaction();
             $product = $this->favoriteRepository->addId($id, $favorite);
 //            print_r($product);
-            DB::commit();
-            return ApiResponseClass::sendResponse(new FavoriteResource($product), 'Trolley Create Successful', 201);
+//            DB::commit();
+            return ApiResponseClass::sendResponse(new FavoriteResource($product), 'Trolley Create Successful');
 
         } catch (\Exception $ex) {
 //            return ApiResponseClass::rollback($ex);
@@ -104,12 +104,8 @@ class FavoriteController extends Controller
     public function destroy($id)
     {
         try {
-            $response = $this->favoriteRepository->removeId($id);
-            if ($response) {
-                return ApiResponseClass::sendResponse('Favorite Delete Successful', '', 204);
-            } else {
-                return ApiResponseClass::sendResponse('The Data Favorite is not found', '', 404);
-            }
+            $this->favoriteRepository->removeId($id);
+            return ApiResponseClass::sendResponse('Favorite Delete Successful', '');
 
         } catch (\Exception $ex) {
             return ApiResponseClass::sendResponse('Favorite Delete Fail', '', 404);

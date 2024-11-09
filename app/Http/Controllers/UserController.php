@@ -29,8 +29,8 @@ class UserController extends Controller
 //
             return response()->json([
                 'message' => 'User registered successfully!',
-                'user' => $user,
-//                'token' => $token,
+                'data' => $user,
+                'token' => 'not implement',
                 'token_type' => 'Bearer'
             ], 201);
 
@@ -57,8 +57,10 @@ class UserController extends Controller
 //            $token = $user->createToken('auth_token')->plainTextToken;
             return response()->json([
                 'message' => 'User logged in successfully!',
-                'user' => $user,
+                'data' => $user,
 //                'token' => $token,
+                'token' => 'not implement',
+
             ]);
 
         } catch (\Exception $exception) {

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 class UserRepository implements UserRepositoryInterface
 {
 
-    function findEmail(string $email):array
+    function findEmail(string $email): array
     {
         return User::query()->where('email', $email)->first()->toArray();
     }
@@ -59,7 +59,8 @@ class UserRepository implements UserRepositoryInterface
             'name' => $data->name,
             'email' => $data->email,
             'password' => Hash::make($data->password),
-        ]);
+        ])->toArray();
+        $user['password'] = '';
         return $user;
     }
 
