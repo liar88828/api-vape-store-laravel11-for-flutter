@@ -8,7 +8,9 @@ interface FavoriteRepositoryInterface
 
     public function findId(int $id);
 
-    public function addId(int $id, array $data);
+    public function create(array $data);
+
+    public function update(int $id, array $data);
 
     public function removeId(int $id);
 

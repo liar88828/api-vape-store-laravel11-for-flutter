@@ -19,16 +19,26 @@ class FavoriteRepository implements FavoriteRepositoryInterface
         return Favorite::query()->findOrFail($id);
     }
 
-    public function addId(int $id, array $data)
+
+
+    public function create(array $data)
+    {
+        return Favorite::query()->create($data);
+    }
+
+
+    public function update(int $id, array $data)
     {
 
         $response = Favorite::query()
-            ->where('id', '=', $id)
+            ->where('id',  $id)
             ->get();
         if ($response->isEmpty()) {
             return Favorite::query()->create($data);
         } else {
-            Favorite::destroy($id);
+            return Favorite::query()->where('id',$id)->update($data);
+
+//            Favorite::destroy($id);
         }
         return false;
     }

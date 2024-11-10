@@ -47,7 +47,19 @@ class FavoriteController extends Controller
      */
     public function store(StoreFavoriteRequest $request)
     {
+        try {
+            $favorite = [
+                'id_user' => $request->id_user,
+                'id_product' => $request->id_product,
+                'title' => $request->title,
+                'description' => $request->description,
+            ];
+            $product = $this->favoriteRepository->create($favorite);
+            return ApiResponseClass::sendResponse(new FavoriteResource($product), 'Favorite Create Successful');
+        } catch (\Exception $ex) {
+            return ApiResponseClass::sendResponse('Fail Create Favorite', $ex, 201);
 
+        }
     }
 
     /**
@@ -86,7 +98,7 @@ class FavoriteController extends Controller
             ];
 
 //            DB::beginTransaction();
-            $product = $this->favoriteRepository->addId($id, $favorite);
+            $product = $this->favoriteRepository->update($id, $favorite);
 //            print_r($product);
 //            DB::commit();
             return ApiResponseClass::sendResponse(new FavoriteResource($product), 'Trolley Create Successful');

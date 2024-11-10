@@ -7,6 +7,18 @@ GET {{api}}/{{path}}
 ### GET ID DATA
 GET {{api}}/{{path}}/4
 
+
+
+### CREATE DATA
+POST {{api}}/{{path}}
+Content-Type: application/json
+
+{
+    "id_user": 14,
+    "id_product": 2,
+    "title": "animal",
+    "description": "is animal art"
+}
 ### CREATE DATA
 PUT {{api}}/{{path}}/14
 Content-Type: application/json
