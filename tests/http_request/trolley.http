@@ -6,11 +6,22 @@ GET {{api}}/{{path}}
 Content-Type: application/json
 
 ### GET ID DATA
-GET {{api}}/{{path}}/1
+GET {{api}}/{{path}}/4
 Content-Type: application/json
 
+
+### GET USER BY ID DATA
+GET {{api}}/{{path}}/id-user/1
+Content-Type: application/json
+
+
+### GET USER BY ID DATA
+GET {{api}}/{{path}}/id-user/count/1
+Content-Type: application/json
+
+
 ### UPDATE DATA
-PUT {{api}}/{{path}}/10123
+PUT {{api}}/{{path}}/null
 Content-Type: application/json
 
 {

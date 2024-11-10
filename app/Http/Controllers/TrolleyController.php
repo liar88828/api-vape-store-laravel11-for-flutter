@@ -38,6 +38,35 @@ class TrolleyController extends Controller
         //
     }
 
+    public function findByUserId($id)
+    {
+        try {
+            $data = $this->trolleyRepository->findByUserId($id);
+            return ApiResponseClass::sendResponse(TrolleyResource::collection($data), '', 200);
+
+        } catch (\Exception $e) {
+            return ApiResponseClass::sendResponse('Trolley Delete Fail', '', 404);
+        }
+        //
+    }
+
+    public function findByUserIdCount($id)
+    {
+        try {
+            $data = $this->trolleyRepository->findByUserIdCount($id);
+//            print_r($data);
+            return ApiResponseClass::sendResponse(
+//                TrolleyResource::collection($data)
+                $data
+                , '', 200);
+
+        } catch (\Exception $e) {
+            return ApiResponseClass::sendResponse('Trolley Delete Fail', '', 404);
+        }
+        //
+    }
+
+
     /**
      * Show the form for creating a new resource.
      */
@@ -51,7 +80,19 @@ class TrolleyController extends Controller
      */
     public function store(StoreTrolleyRequest $request)
     {
+        try {
+            $trolley = [
+                'qty' => $request->qty,
+                'id_product' => $request->id_product,
+                'id_user' => $request->id_user,
+            ];
+            $this->trolleyRepository->create($trolley);
+            return ApiResponseClass::sendResponse('Trolley Create Successful', '', 200);
 
+        } catch (\Exception $ex) {
+            return ApiResponseClass::sendResponse('Trolley Create Fail', $ex, 404);
+
+        }
     }
 
     /**
@@ -62,6 +103,7 @@ class TrolleyController extends Controller
         try {
             $response = $this->trolleyRepository->findId($id);
             return ApiResponseClass::sendResponse(new TrolleyResource($response), '', 200);
+
         } catch (\Exception $ex) {
             return ApiResponseClass::sendResponse("The Data Trolley is not found $id", '', 404);
         }
@@ -84,7 +126,7 @@ class TrolleyController extends Controller
         try {
             $trolley = [
                 'qty' => $request->qty,
-                'id_checkout' => $request->id_checkout ?? null,
+//                'id_checkout' => $request->id_checkout ?? null,
                 'id_product' => $request->id_product,
                 'id_user' => $request->id_user,
             ];

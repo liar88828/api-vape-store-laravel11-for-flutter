@@ -4,6 +4,15 @@
 ### GET ALL DATA
 GET {{api}}/{{path}}
 
+### GET ALL DATA New Product
+GET {{api}}/{{path}}/new-product
+
+### GET ALL DATA favorite
+GET {{api}}/{{path}}/favorite
+
+### GET ALL DATA flash sale
+GET {{api}}/{{path}}/flash-sale
+
 ### GET ID DATA
 GET {{api}}/{{path}}/1
 

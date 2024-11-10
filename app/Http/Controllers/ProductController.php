@@ -31,6 +31,30 @@ class ProductController extends Controller
 
     }
 
+
+    public function newProduct()
+    {
+        $data = $this->productRepository->newProduct();
+        return ApiResponseClass::sendResponse(ProductResource::collection($data), '', 200);
+
+    }
+
+
+    public function favorite()
+    {
+        $data = $this->productRepository->favorite();
+        return ApiResponseClass::sendResponse(ProductResource::collection($data), '', 200);
+
+    }
+
+
+    public function flashSale()
+    {
+        $data = $this->productRepository->favorite();
+        return ApiResponseClass::sendResponse(ProductResource::collection($data), '', 200);
+
+    }
+
     /**
      * Show the form for creating a new resource.
      */

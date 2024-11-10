@@ -16,15 +16,28 @@ class TrolleyRepository implements TrolleyRepositoryInterface
         return Trolley::all();
     }
 
+    public function findByUserId($id)
+    {
+        return Trolley::query()->where('id_user', $id)->get();
+
+    }
+
+    public function findByUserIdCount($id)
+    {
+        return Trolley::query()->where('id_user', $id)->count();
+
+    }
+
     public function findId($id)
     {
         return Trolley::query()->findOrFail($id);
     }
 
-//    public function create(array $data)
-//    {
-////        return Trolley::query()->where('');
-//    }
+    public function create(array $data)
+    {
+        return Trolley::query()->create($data);
+
+    }
 
     public function update(array $data, $id)
     {
@@ -41,6 +54,8 @@ class TrolleyRepository implements TrolleyRepositoryInterface
 
     public function delete($id)
     {
-          Trolley::destroy($id);
+        Trolley::destroy($id);
     }
+
+
 }

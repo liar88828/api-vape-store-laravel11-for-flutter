@@ -12,6 +12,32 @@ class ProductRepository implements ProductRepositoryInterface
         return Product::all();
     }
 
+
+    public function favorite()
+    {
+//        return Product::query()->get();
+        return Product::query()->orderBy('updated_at','desc')
+            ->limit(5)
+            ->get();
+
+    }
+
+    public function newProduct()
+    {
+        return Product::query()->orderBy('created_at','desc')
+            ->limit(5)
+            ->get();
+
+    }
+
+    public function flashSale()
+    {
+        return Product::query()
+            ->orderBy('qty','asc')
+            ->limit(5)
+            ->get();
+    }
+
     public function getById($id)
     {
         return Product::findOrFail($id);
@@ -36,4 +62,6 @@ class ProductRepository implements ProductRepositoryInterface
             return true;
         }
     }
+
+
 }
