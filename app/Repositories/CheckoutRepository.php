@@ -13,6 +13,13 @@ class CheckoutRepository implements CheckoutRepositoryInterface
         return Checkout::all();
     }
 
+    public function findByIdUser(int $id)
+    {
+        return Checkout::query()->where("id_user", $id)
+            ->limit(100)
+            ->get();
+
+    }
     public function findId(int $id)
     {
         return Checkout::query()->findOrFail($id);
@@ -36,4 +43,6 @@ class CheckoutRepository implements CheckoutRepositoryInterface
         }
         return true;
     }
+
+
 }

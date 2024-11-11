@@ -7,6 +7,10 @@ GET {{api}}/{{path}}
 ### GET ID DATA
 GET {{api}}/{{path}}/4
 
+### GET ID DATA
+GET {{api}}/{{path}}/id-user/14
+
+
 ### CREATE DATA
 POST {{api}}/{{path}}
 Content-Type: application/json

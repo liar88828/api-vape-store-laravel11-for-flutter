@@ -46,6 +46,7 @@ class FavoriteController extends Controller
     }
 
 
+
     public function findByIdList($id)
     {
         try {
@@ -58,6 +59,17 @@ class FavoriteController extends Controller
         //
     }
 
+    public function findByIdUserCount($id)
+    {
+        try {
+            $data = $this->favoriteRepository->findByIdUserCount($id);
+            return ApiResponseClass::sendResponse($data, "Success Get Data Favorite by user $id", 200);
+
+        } catch (\Exception $e) {
+            return ApiResponseClass::sendResponse('Favorite Create Fail', '', 404);
+        }
+        //
+    }
 
 
     /**

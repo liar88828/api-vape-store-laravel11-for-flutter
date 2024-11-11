@@ -10,6 +10,8 @@ GET {{api}}/{{path}}/id-user/14
 ### GET ID DATA BY USER ID
 GET {{api}}/{{path}}/id-list/13
 
+### GET ID DATA BY USER ID
+GET {{api}}/{{path}}/id-user/count/14
 
 ### GET ID DATA
 GET {{api}}/{{path}}/4

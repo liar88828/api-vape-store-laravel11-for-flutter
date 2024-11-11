@@ -4,7 +4,6 @@
 ### GET ALL DATA
 GET {{api}}/{{path}}
 
-
 ### GET ALL DATA
 GET {{api}}/{{path}}?name=new
 

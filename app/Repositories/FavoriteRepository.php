@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Interfaces\FavoriteRepositoryInterface;
 use App\Models\Favorite;
 use App\Models\FavoriteList;
+use Illuminate\Support\Facades\DB;
 
 class FavoriteRepository implements FavoriteRepositoryInterface
 {
@@ -32,6 +33,17 @@ class FavoriteRepository implements FavoriteRepositoryInterface
                 , 'favorite_lists.*'
                 , 'products.id as product_id'
                 , 'products.*']);
+    }
+
+
+    public function findByIdUserCount(int $id)
+    {
+        return DB::table('favorite_lists as l')
+            ->join('favorites as f', 'f.id', '=', 'l.id_favorite')
+            ->where('f.id_user', $id)
+            ->count('l.id');
+
+
     }
 
     public function findId(int $id)
@@ -72,4 +84,6 @@ class FavoriteRepository implements FavoriteRepositoryInterface
         }
 
     }
+
+
 }

@@ -3,15 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Classes\ApiResponseClass;
-use App\Http\Resources\CheckoutResource;
-use App\Http\Resources\ProductResource;
-use App\Interfaces\CheckoutRepositoryInterface;
-use App\Interfaces\ProductRepositoryInterface;
-use App\Models\Checkout;
 use App\Http\Requests\StoreCheckoutRequest;
 use App\Http\Requests\UpdateCheckoutRequest;
+use App\Http\Resources\CheckoutResource;
+use App\Interfaces\CheckoutRepositoryInterface;
+use App\Models\Checkout;
 use Exception;
-use Illuminate\Support\Facades\DB;
 
 class CheckoutController extends Controller
 {
@@ -38,12 +35,27 @@ class CheckoutController extends Controller
         }
     }
 
+    public function findByIdUser($id)
+    {
+        try {
+            $data = $this->checkoutRepository->findByIdUser($id);
+            return ApiResponseClass::sendResponse($data, '', 200);
+
+        } catch (Exception $e) {
+
+            return ApiResponseClass::sendResponse('Product Delete Fail', '', 404);
+
+        }
+    }
+
+
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        return ApiResponseClass::sendResponse('not implement', '', 404);
+
     }
 
     /**
@@ -90,7 +102,8 @@ class CheckoutController extends Controller
      */
     public function edit(Checkout $checkout)
     {
-        //
+        return ApiResponseClass::sendResponse('not implement', '', 404);
+
     }
 
     /**

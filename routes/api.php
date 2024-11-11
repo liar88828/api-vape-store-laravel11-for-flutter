@@ -48,12 +48,23 @@ Route::prefix('/trolley')->group(function () {
     });
 });
 
-Route::apiResource('/checkout', CheckoutController::class);
+Route::prefix('/checkout')->group(function () {
+    Route::controller(CheckoutController::class)->group(function () {
+        Route::get('/', 'index');
+        Route::get('/id-user/{id}', 'findByIdUser');
+        Route::get('/{id}', 'show');
+        Route::post('/', 'store');
+        Route::put('/{id}', 'update');
+        Route::delete('/{id}', 'destroy');
+    });
+});
+//Route::apiResource('/checkout', CheckoutController::class);
 //Route::apiResource('/user', ProductController::class);
 //Route::apiResource('/favorite', FavoriteController::class);
 Route::prefix('/favorite')->group(function () {
     Route::controller(FavoriteController::class)->group(function () {
         Route::get('/', 'index');
+        Route::get('/id-user/count/{id}', 'findByIdUserCount');
         Route::get('/id-user/{id}', 'findByIdUser');
         Route::get('/id-list/{id}', 'findByIdList');
         Route::get('/{id}', 'show');
