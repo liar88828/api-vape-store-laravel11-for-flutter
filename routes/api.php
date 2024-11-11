@@ -5,7 +5,6 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TrolleyController;
 use App\Http\Controllers\UserController;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -48,9 +47,21 @@ Route::prefix('/trolley')->group(function () {
         Route::delete('/{id}', 'destroy');
     });
 });
+
 Route::apiResource('/checkout', CheckoutController::class);
 //Route::apiResource('/user', ProductController::class);
-Route::apiResource('/favorite', FavoriteController::class);
+//Route::apiResource('/favorite', FavoriteController::class);
+Route::prefix('/favorite')->group(function () {
+    Route::controller(FavoriteController::class)->group(function () {
+        Route::get('/', 'index');
+        Route::get('/id-user/{id}', 'findByIdUser');
+        Route::get('/id-list/{id}', 'findByIdList');
+        Route::get('/{id}', 'show');
+        Route::post('/', 'store');
+        Route::put('/{id}', 'update');
+        Route::delete('/{id}', 'destroy');
+    });
+});
 //Route::apiResource('/product', ProductController::class);
 
 
@@ -61,10 +72,9 @@ Route::prefix('/product')->group(function () {
         Route::get('/favorite', 'favorite');
         Route::get('/flash-sale', 'flashSale');
         Route::get('/{id}', 'show');
-        Route::get('/id-user/{id}', 'findByProductId');
-        Route::post('/', 'create');
+//        Route::get('/id-user/{id}', 'findByProductId');
+        Route::post('/', 'store');
         Route::put('/{id}', 'update');
         Route::delete('/{id}', 'destroy');
-
     });
 });

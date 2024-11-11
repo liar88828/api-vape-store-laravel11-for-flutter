@@ -4,7 +4,7 @@ namespace App\Interfaces;
 
 interface ProductRepositoryInterface
 {
-    public function index();
+    public function index(array $filters);
     public function favorite();
     public function newProduct();
     public function flashSale();

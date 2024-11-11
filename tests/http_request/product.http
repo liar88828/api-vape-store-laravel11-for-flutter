@@ -4,6 +4,10 @@
 ### GET ALL DATA
 GET {{api}}/{{path}}
 
+
+### GET ALL DATA
+GET {{api}}/{{path}}?name=new
+
 ### GET ALL DATA New Product
 GET {{api}}/{{path}}/new-product
 
@@ -21,10 +25,11 @@ POST {{api}}/{{path}}
 Content-Type: application/json
 
 {
-    "name": "test buku",
+    "name": "test buku new ",
     "qty": 1,
     "price": 123,
-    "id_user": 1,
+    "id_user": 14,
+    "category": "vape",
     "description": "s simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"
 
 }
@@ -38,6 +43,7 @@ Content-Type: application/json
     "qty": 1,
     "price": 123,
     "id_user": 1,
+    "category": "vape",
     "description": "s simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"
 
 }

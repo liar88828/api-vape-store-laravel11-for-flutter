@@ -14,6 +14,7 @@ class Product extends Model
     public string $name;
     public int $qty;
     public int $price;
+    public string $category;
     public string $description;
 
     use HasFactory;
@@ -23,6 +24,7 @@ class Product extends Model
         'name',
         'qty',
         'price',
+        "category",
         'description',
     ];
 }

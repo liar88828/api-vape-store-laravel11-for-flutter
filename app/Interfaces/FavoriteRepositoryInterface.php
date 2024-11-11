@@ -6,6 +6,10 @@ interface FavoriteRepositoryInterface
 {
     public function findAll();
 
+    public function findByIdUser(int $id);
+
+    public function findByIdList(int $id);
+
     public function findId(int $id);
 
     public function create(array $data);

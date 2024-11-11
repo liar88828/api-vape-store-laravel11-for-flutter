@@ -11,7 +11,7 @@ class Favorite extends Model
     //property
     public int $id;
     public string $id_user;
-    public string $id_product;
+//    public string $id_product;
     public string $title;
     public string $description;
 
@@ -19,7 +19,7 @@ class Favorite extends Model
 
     protected $fillable = [
         'id_user',
-        'id_product',
+//        'id_product',
         'title',
         'description',
     ];

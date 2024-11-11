@@ -7,9 +7,24 @@ use App\Models\Product;
 
 class ProductRepository implements ProductRepositoryInterface
 {
-    public function index()
+    public function index(array $filters = [])
     {
-        return Product::all();
+        $query = Product::query();
+
+        // Apply filters dynamically
+        if (isset($filters['name'])) {
+            $query->where('name', 'like', '%' . $filters['name'] . '%');
+        }
+
+        if (isset($filters['category'])) {
+            $query->where('category', $filters['category']);
+        }
+        if (isset($filters['order'])) {
+            $query->orderBy('price', $filters['order'] == 'Low Price' ? 'asc' : 'desc');
+        }
+
+        return $query->get();
+
     }
 
 

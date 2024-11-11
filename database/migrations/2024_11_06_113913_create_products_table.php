@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->integer('qty');
             $table->integer('price');
+            $table->string('category');
             $table->string('description');
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

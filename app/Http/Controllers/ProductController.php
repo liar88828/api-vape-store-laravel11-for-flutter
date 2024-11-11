@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Classes\ApiResponseClass;
+use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Interfaces\ProductRepositoryInterface;
 use App\Models\Product;
-use App\Http\Requests\StoreProductRequest;
-use App\Http\Requests\UpdateProductRequest;
-use Illuminate\Support\Facades\DB;
+use Exception;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -24,9 +25,12 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = $this->productRepository->index();
+
+        $filters = $request->only(['name', 'category', 'order']);
+//        print_r($filters);
+        $data = $this->productRepository->index($filters);
         return ApiResponseClass::sendResponse(ProductResource::collection($data), '', 200);
 
     }
@@ -60,6 +64,7 @@ class ProductController extends Controller
      */
     public function create()
     {
+        return ApiResponseClass::sendFail('not implement', 301);
 
     }
 
@@ -70,21 +75,23 @@ class ProductController extends Controller
     {
 
         try {
-            $details = [
-                'name' => $request->name,
-                'qty' => $request->qty,
-                'price' => $request->price,
-                'description' => $request->description,
-                'id_user' => $request->id_user
-            ];
+//            $details = [
+//                'name' => $request->name,
+//                'qty' => $request->qty,
+//                'price' => $request->price,
+//                'description' => $request->description,
+//                'category' => $request->category,
+//                'id_user' => $request->id_user
+//            ];
 
 //            DB::beginTransaction();
-            $product = $this->productRepository->store($details);
+//            print_r($request->toArray());
+            $response = $this->productRepository->store($request->toArray());
 
 //            DB::commit();
-            return ApiResponseClass::sendResponse(new ProductResource($product), 'Product Create Successful', 200);
+            return ApiResponseClass::sendResponse(new ProductResource($response), 'Product Create Successful', 200);
 
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             return ApiResponseClass::rollback($ex);
         }
     }
@@ -97,7 +104,7 @@ class ProductController extends Controller
         try {
             $product = $this->productRepository->getById($id);
             return ApiResponseClass::sendResponse(new ProductResource($product), '', 200);
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             return ApiResponseClass::sendFail("The Data Product is not found $id", $ex, 404);
 
         }
@@ -109,7 +116,8 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return ApiResponseClass::sendFail('not implement', 301);
+
     }
 
     /**
@@ -132,7 +140,7 @@ class ProductController extends Controller
 //            DB::commit();
             return ApiResponseClass::sendResponse('Product Update Successful', '', 200);
 
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
 //            DB::disconnect();
 
             return ApiResponseClass::sendFail('The Product is fail', $ex, 404);
@@ -147,7 +155,7 @@ class ProductController extends Controller
         try {
             $this->productRepository->delete($id);
             return ApiResponseClass::sendResponse('Product Delete Successful', '', 200);
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             return ApiResponseClass::sendFail('Product Delete Fail', $ex->getMessage(), 404);
         }
     }

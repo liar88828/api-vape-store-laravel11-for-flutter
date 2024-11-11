@@ -26,7 +26,7 @@ class StoreFavoriteRequest extends FormRequest
     {
         return [
             'id_user'=>'required|integer',
-            'id_product'=>'required|integer',
+//            'id_product'=>'required|integer',
             'title'=>'required|string',
             'description'=>'required|string',
         ];
