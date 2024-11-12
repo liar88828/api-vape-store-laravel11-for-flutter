@@ -3,14 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Classes\ApiResponseClass;
-use App\Http\Resources\ProductResource;
-use App\Http\Resources\TrolleyResource;
-use App\Interfaces\ProductRepositoryInterface;
-use App\Interfaces\TrolleyRepositoryInterface;
-use App\Models\Trolley;
 use App\Http\Requests\StoreTrolleyRequest;
 use App\Http\Requests\UpdateTrolleyRequest;
-use Illuminate\Support\Facades\DB;
+use App\Http\Resources\TrolleyResource;
+use App\Interfaces\TrolleyRepositoryInterface;
+use App\Models\Trolley;
 
 class TrolleyController extends Controller
 {
@@ -45,7 +42,7 @@ class TrolleyController extends Controller
             return ApiResponseClass::sendResponse(TrolleyResource::collection($data), '', 200);
 
         } catch (\Exception $e) {
-            return ApiResponseClass::sendResponse('Trolley Delete Fail', '', 404);
+            return ApiResponseClass::sendResponse("Trolley Find by user $id Fail", $e, 404);
         }
         //
     }
@@ -61,7 +58,7 @@ class TrolleyController extends Controller
                 , '', 200);
 
         } catch (\Exception $e) {
-            return ApiResponseClass::sendResponse('Trolley Delete Fail', '', 404);
+            return ApiResponseClass::sendResponse("Trolley Count Fail user id $$id", '', 404);
         }
         //
     }
@@ -72,7 +69,8 @@ class TrolleyController extends Controller
      */
     public function create()
     {
-        //
+        return ApiResponseClass::sendResponse('not implement', '', 404);
+
     }
 
     /**
@@ -114,6 +112,7 @@ class TrolleyController extends Controller
      */
     public function edit(Trolley $trolley)
     {
+        return ApiResponseClass::sendResponse('not implement', '', 404);
 
     }
 
@@ -135,7 +134,7 @@ class TrolleyController extends Controller
             $this->trolleyRepository->update($trolley, $id);
 
 //            DB::commit();
-            return ApiResponseClass::sendResponse('Trolley Update Successful', '', 201);
+            return ApiResponseClass::sendResponse('Trolley Update Successful', '', 200);
 
         } catch (\Exception $ex) {
 //            DB::disconnect();
@@ -152,15 +151,10 @@ class TrolleyController extends Controller
     public function destroy($id)
     {
         try {
-            $response = $this->trolleyRepository->delete($id);
-            if ($response) {
-                return ApiResponseClass::sendResponse('Trolley Delete Successful', '', 204);
-            } else {
-                return ApiResponseClass::sendResponse('The Data Trolley is not found', '', 404);
-            }
-
+            $this->trolleyRepository->delete($id);
+            return ApiResponseClass::sendResponse('Trolley Delete Successful', '');
         } catch (\Exception $ex) {
-            return ApiResponseClass::sendResponse('Trolley Delete Fail', '', 404);
+            return ApiResponseClass::sendResponse("Trolley Fail Delete id $id", '', 404);
         }
     }
 }

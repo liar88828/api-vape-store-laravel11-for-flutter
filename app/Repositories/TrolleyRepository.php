@@ -18,7 +18,13 @@ class TrolleyRepository implements TrolleyRepositoryInterface
 
     public function findByUserId($id)
     {
-        return Trolley::query()->where('id_user', $id)->get();
+        return Trolley::query()
+            ->join('products', 'products.id', '=', 'trolleys.id_product')
+            ->where('trolleys.id_user', $id)
+            ->get(['trolleys.*',
+                'trolleys.id as id_trolley',
+                'trolleys.id_user as trolley_id_user',
+                'products.*']);
 
     }
 
@@ -54,7 +60,12 @@ class TrolleyRepository implements TrolleyRepositoryInterface
 
     public function delete($id)
     {
-        Trolley::destroy($id);
+        $response = Trolley::destroy($id);
+        if ($response == '0') {
+            throw new \Exception("Fail Delete id $id");
+        } else {
+            return true;
+        }
     }
 
 

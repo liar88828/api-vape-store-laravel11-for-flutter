@@ -11,7 +11,7 @@ Content-Type: application/json
 
 
 ### GET USER BY ID DATA
-GET {{api}}/{{path}}/id-user/1
+GET {{api}}/{{path}}/id-user/14
 Content-Type: application/json
 
 
@@ -26,11 +26,11 @@ Content-Type: application/json
 
 {
     "qty": 123,
-    "id_checkout": null,
     "id_product": 2,
     "id_user": 1
 }
 
+### //    "id_checkout": null,
 ### DELETE DATA
 DELETE {{api}}/{{path}}/3
 

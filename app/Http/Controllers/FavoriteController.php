@@ -146,7 +146,7 @@ class FavoriteController extends Controller
 
         } catch (\Exception $ex) {
 //            return ApiResponseClass::rollback($ex);
-            return ApiResponseClass::sendResponse('Fail Create Favorite', $ex, 201);
+            return ApiResponseClass::sendResponse('Fail Create Favorite', $ex, 404);
 
         }
     }
@@ -161,7 +161,7 @@ class FavoriteController extends Controller
             return ApiResponseClass::sendResponse('Favorite Delete Successful', '');
 
         } catch (\Exception $ex) {
-            return ApiResponseClass::sendResponse('Favorite Delete Fail', '', 404);
+            return ApiResponseClass::sendResponse('Favorite Delete Fail', $ex->getMessage(), 404);
         }
     }
 }

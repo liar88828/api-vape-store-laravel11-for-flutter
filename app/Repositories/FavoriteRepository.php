@@ -76,14 +76,10 @@ class FavoriteRepository implements FavoriteRepositoryInterface
 
     public function removeId(int $id)
     {
-        $response = Favorite::destroy($id);
+        $response = Favorite::query()->where('id', $id)->delete();
         if ($response == '0') {
             throw  new \Exception('fail delete favorite');
-        } else {
-            return true;
         }
-
+        return true;
     }
-
-
 }
