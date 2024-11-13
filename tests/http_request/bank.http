@@ -1,0 +1,36 @@
+@api= http://localhost:8000/api
+@path= bank
+
+### GET ALL DATA
+GET {{api}}/{{path}}
+
+### GET ALL DATA
+GET {{api}}/{{path}}/1
+
+
+### CREATE
+POST {{api}}/{{path}}
+Content-Type: application/json
+
+{
+    "name": "mandiri",
+    "phone": "0123123123",
+    "address": "jl. semarang raya",
+    "accounting": "1231-1231-2312-1232"
+}
+
+### UPDATE
+PUT {{api}}/{{path}}/1
+Content-Type: application/json
+
+{
+    "name": "mandiri update",
+    "phone": "0123123123",
+    "address": "jl. semarang raya",
+    "accounting": "1231-1231-2312-1232"
+}
+
+### DELETE DATA
+DELETE {{api}}/{{path}}/sdasda
+
+

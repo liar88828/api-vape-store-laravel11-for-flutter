@@ -30,7 +30,7 @@ class CheckoutController extends Controller
 
         } catch (Exception $e) {
 
-            return ApiResponseClass::sendResponse('Product Delete Fail', '', 404);
+            return ApiResponseClass::sendFail("Checkout Delete Fail : {$e->getMessage()}");
 
         }
     }
@@ -43,7 +43,7 @@ class CheckoutController extends Controller
 
         } catch (Exception $e) {
 
-            return ApiResponseClass::sendResponse('Product Delete Fail', '', 404);
+            return ApiResponseClass::sendFail("Checkout Delete Fail id $$id : {$e->getMessage()}");
 
         }
     }
@@ -54,7 +54,7 @@ class CheckoutController extends Controller
      */
     public function create()
     {
-        return ApiResponseClass::sendResponse('not implement', '', 404);
+        return ApiResponseClass::sendFail('not implement', '', 301);
 
     }
 
@@ -64,22 +64,22 @@ class CheckoutController extends Controller
     public function store(StoreCheckoutRequest $request)
     {
         try {
-            $checkout = [
-                'id_user' => $request->id_user,
-                'total' => $request->total,
-                'payment_method' => $request->payment_method,
-                'payment_price' => $request->payment_price,
-                'delivery_method' => $request->delivery_method,
-                'delivery_price' => $request->delivery_price,
-            ];
+//            $checkout = [
+//                'id_user' => $request->id_user,
+//                'total' => $request->total,
+//                'payment_method' => $request->payment_method,
+//                'payment_price' => $request->payment_price,
+//                'delivery_method' => $request->delivery_method,
+//                'delivery_price' => $request->delivery_price,
+//            ];
 //            DB::beginTransaction();
-            $data = $this->checkoutRepository->create($checkout);
+            $data = $this->checkoutRepository->create($request->toArray());
 //            DB::commit();
             return ApiResponseClass::sendResponse(new CheckoutResource($data), 'Checkout Create Successful', 201);
 
         } catch (\Exception $ex) {
 //            return ApiResponseClass::rollback($ex);
-            return ApiResponseClass::sendResponse('Checkout Create Fail', $ex, 404);
+            return ApiResponseClass::sendFail('Checkout Create Fail', $ex->getMessage(), 404);
 
         }
     }
@@ -93,7 +93,7 @@ class CheckoutController extends Controller
             $data = $this->checkoutRepository->findId($id);
             return ApiResponseClass::sendResponse(new CheckoutResource($data), 'success', 200);
         } catch (Exception $e) {
-            return ApiResponseClass::sendResponse('Checkout Delete Fail', '', 404);
+            return ApiResponseClass::sendFail('Checkout Delete Fail', $e->getMessage(), 404);
         }
     }
 
@@ -112,22 +112,22 @@ class CheckoutController extends Controller
     public function update(UpdateCheckoutRequest $request, $id)
     {
         try {
-            $checkout = [
-                'id_user' => $request->id_user,
-                'total' => $request->total,
-                'payment_method' => $request->payment_method,
-                'payment_price' => $request->payment_price,
-                'delivery_method' => $request->delivery_method,
-                'delivery_price' => $request->delivery_price,
-            ];
+//            $checkout = [
+//                'id_user' => $request->id_user,
+//                'total' => $request->total,
+//                'payment_method' => $request->payment_method,
+//                'payment_price' => $request->payment_price,
+//                'delivery_method' => $request->delivery_method,
+//                'delivery_price' => $request->delivery_price,
+//            ];
 //            DB::beginTransaction();
-            $this->checkoutRepository->update($checkout, $id);
+            $this->checkoutRepository->update($request->toArray(), $id);
 //            DB::commit();
             return ApiResponseClass::sendResponse('Checkout Update Successful', '', 201);
 
         } catch (Exception $e) {
 //            return ApiResponseClass::rollback($e);
-            return ApiResponseClass::sendResponse('Checkout Update Fail', $e, 404);
+            return ApiResponseClass::sendResponse('Checkout Update Fail', $e->getMessage(), 404);
 
         }
     }
@@ -138,14 +138,10 @@ class CheckoutController extends Controller
     public function destroy($id)
     {
         try {
-            $response = $this->checkoutRepository->delete($id);
-            if ($response) {
-                return ApiResponseClass::sendResponse('Checkout Delete Successful', '', 204);
-            } else {
-                return ApiResponseClass::sendResponse('The Data Checkout is not found', '', 404);
-            }
+            $this->checkoutRepository->delete($id);
+            return ApiResponseClass::sendResponse('Checkout Delete Successful', '', 204);
         } catch (\Exception $ex) {
-            return ApiResponseClass::sendResponse('Checkout Delete Fail', '', 404);
+            return ApiResponseClass::sendResponse('Checkout Delete Fail', $ex->getMessage(), 404);
         }
     }
 }

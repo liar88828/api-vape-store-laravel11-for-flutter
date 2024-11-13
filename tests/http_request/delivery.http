@@ -1,0 +1,36 @@
+@api= http://localhost:8000/api
+@path= delivery
+
+### GET ALL DATA
+GET {{api}}/{{path}}
+
+### GET ALL DATA
+GET {{api}}/{{path}}/1
+
+
+### CREATE
+POST {{api}}/{{path}}
+Content-Type: application/json
+
+{
+    "name": "jnt",
+    "phone": "0123123123",
+    "address": "jl. semarang raya",
+    "price": "1231123"
+}
+
+### UPDATE
+PUT {{api}}/{{path}}/1
+Content-Type: application/json
+
+{
+    "name": "jnt",
+    "phone": "0123123123",
+    "address": "jl. semarang raya",
+    "price": "23423"
+}
+
+### DELETE DATA
+DELETE {{api}}/{{path}}/1
+
+

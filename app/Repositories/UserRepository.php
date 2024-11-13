@@ -4,12 +4,9 @@ namespace App\Repositories;
 
 use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
-use Illuminate\Support\Facades\Auth;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -19,7 +16,7 @@ class UserRepository implements UserRepositoryInterface
         return User::query()->where('email', $email)->first()->toArray();
     }
 
-    function validRegister(Request $request)
+    function validRegister(Request $request): array
     {
 
         // Validate the incoming request
@@ -33,10 +30,10 @@ class UserRepository implements UserRepositoryInterface
         if ($validator->fails()) {
             throw new \Exception($validator->errors()->first());
         }
-        return $request;
+        return $validator->getData();
     }
 
-    function validLogin(Request $request)
+    function validLogin(Request $request): array
     {
 
         // Validate the login credentials
@@ -48,21 +45,9 @@ class UserRepository implements UserRepositoryInterface
         if ($validator->fails()) {
             throw new \Exception($validator->errors()->first());
         }
-        return $request;
+        return $validator->getData();
     }
 
-
-    function registerUser(Request $data)
-    {
-//         Create the user
-        $user = User::query()->create([
-            'name' => $data->name,
-            'email' => $data->email,
-            'password' => Hash::make($data->password),
-        ])->toArray();
-        $user['password'] = '';
-        return $user;
-    }
 
     function logoutUser()
     {

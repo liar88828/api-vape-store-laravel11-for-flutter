@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateTrolleyRequest;
 use App\Http\Resources\TrolleyResource;
 use App\Interfaces\TrolleyRepositoryInterface;
 use App\Models\Trolley;
+use Illuminate\Support\Facades\DB;
 
 class TrolleyController extends Controller
 {
@@ -27,10 +28,10 @@ class TrolleyController extends Controller
     {
         try {
             $data = $this->trolleyRepository->findAll();
-            return ApiResponseClass::sendResponse(TrolleyResource::collection($data), '', 200);
+            return ApiResponseClass::sendResponse(TrolleyResource::collection($data), '');
 
         } catch (\Exception $e) {
-            return ApiResponseClass::sendResponse('Trolley Delete Fail', '', 404);
+            return ApiResponseClass::sendFail('Trolley Delete Fail', '');
         }
         //
     }
@@ -39,7 +40,7 @@ class TrolleyController extends Controller
     {
         try {
             $data = $this->trolleyRepository->findByUserId($id);
-            return ApiResponseClass::sendResponse(TrolleyResource::collection($data), '', 200);
+            return ApiResponseClass::sendResponse(TrolleyResource::collection($data), '');
 
         } catch (\Exception $e) {
             return ApiResponseClass::sendResponse("Trolley Find by user $id Fail", $e, 404);
@@ -51,16 +52,10 @@ class TrolleyController extends Controller
     {
         try {
             $data = $this->trolleyRepository->findByUserIdCount($id);
-//            print_r($data);
-            return ApiResponseClass::sendResponse(
-//                TrolleyResource::collection($data)
-                $data
-                , '', 200);
-
+            return ApiResponseClass::sendResponse($data, '');
         } catch (\Exception $e) {
-            return ApiResponseClass::sendResponse("Trolley Count Fail user id $$id", '', 404);
+            return ApiResponseClass::sendFail("Trolley Count Fail user id $$id", '');
         }
-        //
     }
 
 
@@ -69,7 +64,7 @@ class TrolleyController extends Controller
      */
     public function create()
     {
-        return ApiResponseClass::sendResponse('not implement', '', 404);
+        return ApiResponseClass::sendFail('not implement', '', 301);
 
     }
 
@@ -85,10 +80,10 @@ class TrolleyController extends Controller
                 'id_user' => $request->id_user,
             ];
             $this->trolleyRepository->create($trolley);
-            return ApiResponseClass::sendResponse('Trolley Create Successful', '', 200);
+            return ApiResponseClass::sendResponse('Trolley Create Successful', '');
 
         } catch (\Exception $ex) {
-            return ApiResponseClass::sendResponse('Trolley Create Fail', $ex, 404);
+            return ApiResponseClass::sendFail('Trolley Create Fail', $ex);
 
         }
     }
@@ -100,10 +95,10 @@ class TrolleyController extends Controller
     {
         try {
             $response = $this->trolleyRepository->findId($id);
-            return ApiResponseClass::sendResponse(new TrolleyResource($response), '', 200);
+            return ApiResponseClass::sendResponse(new TrolleyResource($response), '');
 
         } catch (\Exception $ex) {
-            return ApiResponseClass::sendResponse("The Data Trolley is not found $id", '', 404);
+            return ApiResponseClass::sendFail("The Data Trolley is not found $id", '');
         }
     }
 
@@ -112,7 +107,7 @@ class TrolleyController extends Controller
      */
     public function edit(Trolley $trolley)
     {
-        return ApiResponseClass::sendResponse('not implement', '', 404);
+        return ApiResponseClass::sendFail('not implement', '', 301);
 
     }
 
@@ -129,18 +124,14 @@ class TrolleyController extends Controller
                 'id_product' => $request->id_product,
                 'id_user' => $request->id_user,
             ];
-//print_r($trolley);
-//            DB::beginTransaction();
+            DB::beginTransaction();
             $this->trolleyRepository->update($trolley, $id);
 
-//            DB::commit();
-            return ApiResponseClass::sendResponse('Trolley Update Successful', '', 200);
-
+            DB::commit();
+            return ApiResponseClass::sendResponse('Trolley Update Successful', '');
         } catch (\Exception $ex) {
-//            DB::disconnect();
-
-//            return ApiResponseClass::rollback($ex);
-            return ApiResponseClass::sendResponse('Trolley Update Fail', $ex, 404);
+            DB::rollBack();
+            return ApiResponseClass::sendFail('Trolley Update Fail', $ex);
 
         }
     }
@@ -154,7 +145,7 @@ class TrolleyController extends Controller
             $this->trolleyRepository->delete($id);
             return ApiResponseClass::sendResponse('Trolley Delete Successful', '');
         } catch (\Exception $ex) {
-            return ApiResponseClass::sendResponse("Trolley Fail Delete id $id", '', 404);
+            return ApiResponseClass::sendFail("Trolley Fail Delete id $id", '');
         }
     }
 }

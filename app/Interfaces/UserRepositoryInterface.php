@@ -9,11 +9,11 @@ interface UserRepositoryInterface
 {
     function findEmail(string $email);
 
-    function validRegister(Request $request);
+    function validRegister(Request $request): array;
 
-    function validLogin(Request $request);
+    function validLogin(Request $request): array;
 
-    function registerUser(Request $data);
+//    function registerUser(Request $data);
 
     function logoutUser();
 

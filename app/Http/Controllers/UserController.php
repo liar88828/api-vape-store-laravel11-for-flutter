@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\ApiResponseClass;
 use App\Interfaces\UserRepositoryInterface;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -20,27 +21,23 @@ class UserController extends Controller
     {
         try {
 
-            // Validate the incoming request
-            $valid = $this->userRepository->validRegister($request);
+            $this->userRepository->validRegister($request);
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password)
+            ]);
+            $token = $user->createToken('myAppToken')->plainTextToken;
 
-            // Create the user
-            $user = $this->userRepository->registerUser($request);
-//            $token = $user->createToken('auth_token')->plainTextToken;
-//
             return response()->json([
                 'message' => 'User registered successfully!',
                 'data' => $user,
-                'token' => 'not implement',
+                'token' => $token,
                 'token_type' => 'Bearer'
-            ], 201);
+            ],);
 
         } catch (\Exception $exception) {
-//            print_r($exception->getMessage());
-            return response()->json([
-                'message' => $exception->getMessage(),
-//                'message' => 'error bos',
-            ]);
-
+            return ApiResponseClass::sendFail("fail register : {$exception->getMessage()}");
         }
     }
 
@@ -49,34 +46,46 @@ class UserController extends Controller
     {
         try {
             $this->userRepository->validLogin($request);
-            $user = $this->userRepository->checkEmail($request->email);
+            $user = User::query()->where('email', $request->email)->first();
             $this->userRepository->checkPassword($request->password, $user['password']);
-
-            $user['password'] = '';
-            // Generate a token for the user (assuming you're using Laravel Sanctum or Passport for API authentication)
-//            $token = $user->createToken('auth_token')->plainTextToken;
+            $token = $user->createToken('myAppToken')->plainTextToken;
             return response()->json([
-                'message' => 'User logged in successfully!',
                 'data' => $user,
-//                'token' => $token,
-                'token' => 'not implement',
-
+                'token' => $token,
+                'message' => 'User logged in successfully!',
             ]);
-
         } catch (\Exception $exception) {
-            return response()->json([
-                'message' => $exception->getMessage(),
-            ]);
+            return ApiResponseClass::sendFail("fail login : {$exception->getMessage()}");
+
         }
+    }
+
+    public function getUser(Request $request)
+    {
+        try {
+//            print_r($request->bearerToken());
+
+            if (auth('sanctum')->check()) {
+                return ApiResponseClass::sendResponse($request->user(), 'Success get User Data');
+            }
+            throw  new \Exception('Token is not valid');
+        } catch (\Exception $exception) {
+            return ApiResponseClass::sendFail("Success get User Data : {$exception->getMessage()}");
+        }
+
     }
 
     public function logout(Request $request)
     {
-        // Revoke the user's current token
-        $request->user()->currentAccessToken()->delete();
-//        Auth::user()->getRememberTokenName()->delete();
-        return response()->json([
-            'message' => 'User logged out successfully!',
-        ]);
+        try {
+//            $token = PersonalAccessToken::findToken($hashedTooken);
+            if (auth('sanctum')->check()) {
+                $request->user()->currentAccessToken()->delete();
+                return response()->json(['message' => 'User logged out successfully!',]);
+            }
+            throw  new \Exception('Token is not valid');
+        } catch (\Exception $exception) {
+            return ApiResponseClass::sendFail("fail logout : {$exception->getMessage()}");
+        }
     }
 }

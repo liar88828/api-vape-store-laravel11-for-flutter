@@ -20,6 +20,7 @@ class CheckoutRepository implements CheckoutRepositoryInterface
             ->get();
 
     }
+
     public function findId(int $id)
     {
         return Checkout::query()->findOrFail($id);
@@ -32,7 +33,7 @@ class CheckoutRepository implements CheckoutRepositoryInterface
 
     public function update(array $data, int $id)
     {
-        Checkout::query()->where('id','=', $id)->update($data);
+        Checkout::query()->where('id', '=', $id)->update($data);
     }
 
     public function delete($id)

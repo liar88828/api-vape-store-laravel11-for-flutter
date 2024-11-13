@@ -6,27 +6,38 @@ POST {{api}}//tokens/create
 ### GET ALL DATA
 GET {{api}}/{{path}}/user
 
+### GET ALL DATA
+GET {{api}}/{{path}}/user
+Authorization: Bearer 10|UHrbz2u9P0vYjhZKSzbNQ09Lo1wXt0HkTVvDTXbN05199822
+
+
 ### REGISTER DATA
 POST {{api}}/{{path}}/register
 Content-Type: application/json
 
 {
-    "name": "user19",
-    "email": "user19@gmail.com",
+    "name": "user29",
+    "email": "user29@gmail.com",
     "password": "user12345",
     "password_confirmation": "user12345"
 }
 
-### UPDATE DATA
+### LOGIN DATA
 POST {{api}}/{{path}}/login
 Content-Type: application/json
 
 {
-    "email": "user1@gmail.com",
+    "email": "user29@gmail.com",
     "password": "user12345"
 }
 
 
+### GET ALL DATA
+GET {{api}}/{{path}}/user
+Authorization: Bearer 12|NHbLwb95RsFoTqLiAGFwoLB2QUjPcCJIJrdrKUXn7b5cc68e
+
 ### DELETE DATA
-DELETE {{api}}/{{path}}/4
+DELETE {{api}}/{{path}}/logout
+Authorization: Bearer 11|vZJUjaTWpjtL5qIfAKBe8MTMIWZA5yiYlnUGxMp9c09513f3
+
 
