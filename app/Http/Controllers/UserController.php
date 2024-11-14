@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Classes\ApiResponseClass;
+use App\Http\Resources\UserResource;
 use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -36,7 +38,7 @@ class UserController extends Controller
                 'token_type' => 'Bearer'
             ],);
 
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             return ApiResponseClass::sendFail("fail register : {$exception->getMessage()}");
         }
     }
@@ -54,7 +56,7 @@ class UserController extends Controller
                 'token' => $token,
                 'message' => 'User logged in successfully!',
             ]);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             return ApiResponseClass::sendFail("fail login : {$exception->getMessage()}");
 
         }
@@ -68,12 +70,26 @@ class UserController extends Controller
             if (auth('sanctum')->check()) {
                 return ApiResponseClass::sendResponse($request->user(), 'Success get User Data');
             }
-            throw  new \Exception('Token is not valid');
-        } catch (\Exception $exception) {
+            throw  new Exception('Token is not valid');
+        } catch (Exception $exception) {
             return ApiResponseClass::sendFail("Success get User Data : {$exception->getMessage()}");
         }
 
     }
+
+    public function show($id)
+    {
+
+        try {
+            $data = $this->userRepository->findId($id);
+            return ApiResponseClass::sendResponse(new UserResource($data), "Bank Detail Successful $id", 201);
+
+        } catch (Exception $exception) {
+            return ApiResponseClass::sendFail("Success get User Data : {$exception->getMessage()}");
+        }
+
+    }
+
 
     public function logout(Request $request)
     {
@@ -83,8 +99,8 @@ class UserController extends Controller
                 $request->user()->currentAccessToken()->delete();
                 return response()->json(['message' => 'User logged out successfully!',]);
             }
-            throw  new \Exception('Token is not valid');
-        } catch (\Exception $exception) {
+            throw  new Exception('Token is not valid');
+        } catch (Exception $exception) {
             return ApiResponseClass::sendFail("fail logout : {$exception->getMessage()}");
         }
     }

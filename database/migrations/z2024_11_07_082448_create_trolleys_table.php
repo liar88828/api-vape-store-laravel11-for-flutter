@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_product');
             $table->unsignedBigInteger('id_user');
             $table->integer('qty');
+            $table->string('option');
 //            $table->unsignedBigInteger('favorite_id')->nullable();
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('id_product')->references('id')->on('products')->onDelete('cascade');

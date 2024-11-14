@@ -7,6 +7,8 @@ use App\Http\Requests\StoreDeliveryRequest;
 use App\Http\Requests\UpdateDeliveryRequest;
 use App\Http\Resources\DeliveryResource;
 use App\Interfaces\DeliveryRepositoryInterface;
+use Exception;
+use Illuminate\Http\JsonResponse;
 
 class DeliveryController extends Controller
 {
@@ -21,15 +23,15 @@ class DeliveryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): JsonResponse
     {
         try {
             $data = $this->deliveryRepository->findAll();
-            return ApiResponseClass::sendResponse($data, '');
+            return ApiResponseClass::sendResponse($data, 'success get all data delivery');
 
 
-        } catch (\Exception $exception) {
-            return ApiResponseClass::sendFail('Delivery Delete Fail', $exception->getMessage(), 404);
+        } catch (Exception $exception) {
+            return ApiResponseClass::sendFail('Delivery Delete Fail', $exception->getMessage());
 
         }
     }
@@ -37,35 +39,35 @@ class DeliveryController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): JsonResponse
     {
-        return ApiResponseClass::sendFail('Delivery api create is not implement', '', 301);
+        return ApiResponseClass::sendFail('Delivery api create is not implement', 301);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreDeliveryRequest $request)
+    public function store(StoreDeliveryRequest $request): JsonResponse
     {
         try {
 
             $data = $this->deliveryRepository->store($request->toArray());
-            return ApiResponseClass::sendResponse(new DeliveryResource($data), 'Delivery Create Successful', 201);
-        } catch (\Exception $exception) {
-            return ApiResponseClass::sendFail('Delivery Create Fail', $exception->getMessage(), 404);
+            return ApiResponseClass::sendResponse(new DeliveryResource($data), 'Delivery Create Successful');
+        } catch (Exception $exception) {
+            return ApiResponseClass::sendFail('Delivery Create Fail', $exception->getMessage());
         }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show($id): JsonResponse
     {
         try {
             $data = $this->deliveryRepository->findById($id);
-            return ApiResponseClass::sendResponse(new DeliveryResource($data), "Delivery Detail Successful $id", 200);
-        } catch (\Exception $exception) {
-            return ApiResponseClass::sendFail("Delivery Detail Fail $id", $exception->getMessage(), 404);
+            return ApiResponseClass::sendResponse(new DeliveryResource($data), "Delivery Detail Successful $id", 201);
+        } catch (Exception $exception) {
+            return ApiResponseClass::sendFail("Delivery Detail Fail $id " . $exception->getMessage());
 
         }
     }
@@ -73,35 +75,35 @@ class DeliveryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit()
+    public function edit(): JsonResponse
     {
-        return ApiResponseClass::sendFail('bank edit not implement', '', 401);
+        return ApiResponseClass::sendFail('bank edit not implement', 301);
 
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateDeliveryRequest $request, $id)
+    public function update(UpdateDeliveryRequest $request, $id): JsonResponse
     {
         try {
             $this->deliveryRepository->updateId($request->toArray(), $id);
-            return ApiResponseClass::sendResponse($request->all(), "Delivery Update Successful $id", 200);
-        } catch (\Exception $exception) {
-            return ApiResponseClass::sendFail("Delivery Update Fail $id", $exception->getMessage(), 404);
+            return ApiResponseClass::sendResponse($request->all(), "Delivery Update Successful $id");
+        } catch (Exception $exception) {
+            return ApiResponseClass::sendFail("Delivery Update Fail $id " . $exception->getMessage());
         }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
         try {
             $this->deliveryRepository->deleteId($id);
-            return ApiResponseClass::sendResponse('', "Delivery Delete Successful $id", 200);
-        } catch (\Exception $exception) {
-            return ApiResponseClass::sendFail("Delivery Delete Fail $id", $exception->getMessage(), 404);
+            return ApiResponseClass::sendResponse('', "Delivery Delete Successful $id");
+        } catch (Exception $exception) {
+            return ApiResponseClass::sendFail("Delivery Delete Fail $id" . $exception->getMessage());
         }
     }
 }

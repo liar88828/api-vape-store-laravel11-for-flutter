@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -14,6 +15,12 @@ class UserRepository implements UserRepositoryInterface
     function findEmail(string $email): array
     {
         return User::query()->where('email', $email)->first()->toArray();
+    }
+
+    function findId(string $id)
+    {
+        return User::query()->where('id', $id)->first();
+
     }
 
     function validRegister(Request $request): array
@@ -28,7 +35,7 @@ class UserRepository implements UserRepositoryInterface
 
 
         if ($validator->fails()) {
-            throw new \Exception($validator->errors()->first());
+            throw new Exception($validator->errors()->first());
         }
         return $validator->getData();
     }
@@ -43,7 +50,7 @@ class UserRepository implements UserRepositoryInterface
         ]);
 
         if ($validator->fails()) {
-            throw new \Exception($validator->errors()->first());
+            throw new Exception($validator->errors()->first());
         }
         return $validator->getData();
     }
@@ -59,7 +66,7 @@ class UserRepository implements UserRepositoryInterface
     {
         $response = $this->findEmail($email);
         if (!$response) {
-            throw new \Exception('Email is not registered');
+            throw new Exception('Email is not registered');
         }
         return $response;
     }
@@ -67,7 +74,7 @@ class UserRepository implements UserRepositoryInterface
     function checkPassword(string $reqPassword, string $dbPassword)
     {
         if (!Hash::check($reqPassword, $dbPassword)) {
-            throw  new \Exception('Wrong password');
+            throw  new Exception('Wrong password');
         }
         return true;
     }

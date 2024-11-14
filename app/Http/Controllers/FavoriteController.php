@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Classes\ApiResponseClass;
+use App\Http\Requests\StoreFavoriteListRequest;
 use App\Http\Requests\StoreFavoriteRequest;
 use App\Http\Requests\UpdateFavoriteRequest;
 use App\Http\Resources\FavoriteResource;
 use App\Interfaces\FavoriteRepositoryInterface;
-use App\Models\Favorite;
+use Exception;
+use Illuminate\Http\JsonResponse;
 
 class FavoriteController extends Controller
 {
@@ -21,52 +23,50 @@ class FavoriteController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): JsonResponse
     {
         try {
             $data = $this->favoriteRepository->findAll();
-            return ApiResponseClass::sendResponse(FavoriteResource::collection($data), '', 200);
+            return ApiResponseClass::sendResponse(FavoriteResource::collection($data), 'success find all data');
 
-        } catch (\Exception $e) {
-            return ApiResponseClass::sendResponse('Favorite Delete Fail', '', 404);
+        } catch (Exception $e) {
+            return ApiResponseClass::sendFail("Favorite Delete Fail :{$e->getMessage()} ");
         }
         //
     }
 
-    public function findByIdUser($id)
+    public function findByIdUser($id): JsonResponse
     {
         try {
             $data = $this->favoriteRepository->findByIdUser($id);
-            return ApiResponseClass::sendResponse(FavoriteResource::collection($data), "Success Get Data Favorite by user $id", 200);
+            return ApiResponseClass::sendResponse(FavoriteResource::collection($data), "Success Get Data Favorite by user $id", 201);
 
-        } catch (\Exception $e) {
-            return ApiResponseClass::sendResponse('Favorite Create Fail', '', 404);
+        } catch (Exception $e) {
+            return ApiResponseClass::sendFail('Favorite Create Fail : ' . $e->getMessage());
         }
         //
     }
 
-
-
-    public function findByIdList($id)
+    public function findByIdList($id): JsonResponse
     {
         try {
             $data = $this->favoriteRepository->findByIdList($id);
-            return ApiResponseClass::sendResponse(FavoriteResource::collection($data), "Success Get Data Favorite by user $id", 200);
+            return ApiResponseClass::sendResponse(FavoriteResource::collection($data), "Success Get Data Favorite by user $id", 201);
 
-        } catch (\Exception $e) {
-            return ApiResponseClass::sendResponse('Favorite Create Fail', '', 404);
+        } catch (Exception $e) {
+            return ApiResponseClass::sendFail('Favorite Create Fail :' . $e->getMessage());
         }
         //
     }
 
-    public function findByIdUserCount($id)
+    public function findByIdUserCount($id): JsonResponse
     {
         try {
             $data = $this->favoriteRepository->findByIdUserCount($id);
-            return ApiResponseClass::sendResponse($data, "Success Get Data Favorite by user $id", 200);
+            return ApiResponseClass::sendResponse($data, "Success Get Data Favorite by user $id", 201);
 
-        } catch (\Exception $e) {
-            return ApiResponseClass::sendResponse('Favorite Create Fail', '', 404);
+        } catch (Exception $e) {
+            return ApiResponseClass::sendFail('Favorite Create Fail : ' . $e->getMessage());
         }
         //
     }
@@ -75,29 +75,46 @@ class FavoriteController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): JsonResponse
     {
-        return ApiResponseClass::sendResponse('not implement', 'not implement', 301);
+        return ApiResponseClass::sendFail('not implement', 301);
 
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreFavoriteRequest $request)
+    public function store(StoreFavoriteRequest $request): JsonResponse
     {
         try {
-            $favorite = [
-                'id_user' => $request->id_user,
+            $data = [
 //                'id_product' => $request->id_product,
+                'id_user' => $request->id_user,
                 'title' => $request->title,
                 'description' => $request->description,
             ];
-//            print_r($favorite);
-            $response = $this->favoriteRepository->create($favorite);
-            return ApiResponseClass::sendResponse(new FavoriteResource($response), 'Favorite Create Successful');
-        } catch (\Exception $ex) {
-            return ApiResponseClass::sendResponse('Fail Create Favorite', $ex, 401);
+//            print_r($data);
+            $this->favoriteRepository->create($data);
+            return ApiResponseClass::sendResponse($data, 'Favorite Create Successful');
+        } catch (Exception $ex) {
+            return ApiResponseClass::sendFail('Fail Create Favorite ' . $ex, 400);
+//
+        }
+    }
+
+    public function addToFavoriteList(StoreFavoriteListRequest $request): JsonResponse
+    {
+        try {
+            $data = [
+                'id_favorite' => $request->id_favorite,
+                'id_product' => $request->id_product,
+//                'id_user' => $request->id_user,
+            ];
+//            print_r($data);
+            $this->favoriteRepository->addToFavoriteList($data);
+            return ApiResponseClass::sendResponse($data, 'Favorite Create Successful add favorite list');
+        } catch (Exception $ex) {
+            return ApiResponseClass::sendFail('Fail Create Favorite ' . $ex->getMessage(), 400);
 //
         }
     }
@@ -105,48 +122,47 @@ class FavoriteController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show($id): JsonResponse
     {
         try {
             $response = $this->favoriteRepository->findId($id);
 //            print_r($response);
-            return ApiResponseClass::sendResponse(new FavoriteResource($response), '', 200);
-        } catch (\Exception $ex) {
-            return ApiResponseClass::sendResponse("The Data Trolley is not found $id", '', 404);
+            return ApiResponseClass::sendResponse(new FavoriteResource($response), 'success', 201);
+        } catch (Exception $ex) {
+            return ApiResponseClass::sendFail("The Data Favorite is not found $id" . $ex->getMessage());
         }
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Favorite $favorite)
+    public function edit($id): JsonResponse
     {
-        return ApiResponseClass::sendResponse('not implement', 'not implement', 301);
+        return ApiResponseClass::sendFail('not implement :id ' . $id, 301);
 
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateFavoriteRequest $request, $id)
+    public function update(UpdateFavoriteRequest $request, $id): JsonResponse
     {
         try {
-            $favorite = [
-                'id_user' => $request->id_user,
+            $data = [
+//                'id_user' => $request->id_user,
 //                'id_product' => $request->id_product,
                 'title' => $request->title,
                 'description' => $request->description,
             ];
 
 //            DB::beginTransaction();
-            $response = $this->favoriteRepository->update($id, $favorite);
-//            print_r($product);
 //            DB::commit();
-            return ApiResponseClass::sendResponse(new FavoriteResource($response), 'Trolley Create Successful');
+            $this->favoriteRepository->update($id, $data);
+            return ApiResponseClass::sendResponse($data, 'Favorite Update Successful');
 
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
 //            return ApiResponseClass::rollback($ex);
-            return ApiResponseClass::sendResponse('Fail Create Favorite', $ex, 404);
+            return ApiResponseClass::sendFail("Fail Update Favorite : {$ex->getMessage()}");
 
         }
     }
@@ -154,14 +170,14 @@ class FavoriteController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
         try {
             $this->favoriteRepository->removeId($id);
-            return ApiResponseClass::sendResponse('Favorite Delete Successful', '');
+            return ApiResponseClass::sendResponse("Favorite Delete Successful $id", "success delete favorite id :$id");
 
-        } catch (\Exception $ex) {
-            return ApiResponseClass::sendResponse('Favorite Delete Fail', $ex->getMessage(), 404);
+        } catch (Exception $ex) {
+            return ApiResponseClass::sendFail("Favorite Delete Fail id $id : {$ex->getMessage()}", 404);
         }
     }
 }

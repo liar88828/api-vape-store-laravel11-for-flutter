@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Interfaces\FavoriteRepositoryInterface;
 use App\Models\Favorite;
 use App\Models\FavoriteList;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class FavoriteRepository implements FavoriteRepositoryInterface
@@ -57,29 +58,34 @@ class FavoriteRepository implements FavoriteRepositoryInterface
         return Favorite::query()->create($data);
     }
 
+    public function addToFavoriteList(array $data)
+    {
+        return FavoriteList::query()->create($data);
+    }
+
 
     public function update(int $id, array $data)
     {
-
-        $response = Favorite::query()
-            ->where('id', $id)
-            ->get();
-        if ($response->isEmpty()) {
-            return Favorite::query()->create($data);
-        } else {
-            return Favorite::query()->where('id', $id)->update($data);
-
-//            Favorite::destroy($id);
+//        print_r($data);
+        $response = Favorite::query()->where('id', $id)->update($data);
+        if ($response == '0') {
+            throw new Exception("Fail Update Data $id");
         }
-        return false;
+        return true;
     }
 
     public function removeId(int $id)
     {
-        $response = Favorite::query()->where('id', $id)->delete();
+        $response = null;
+        DB::transaction(function () use ($id) {
+            FavoriteList::query()->where('id_favorite', $id)->delete();
+            $response = Favorite::query()->where('id', $id)->delete();
+        }, 5);
         if ($response == '0') {
-            throw  new \Exception('fail delete favorite');
+            throw  new Exception('fail delete favorite');
         }
         return true;
     }
+
+
 }

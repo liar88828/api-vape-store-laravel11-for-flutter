@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateTrolleyRequest;
 use App\Http\Resources\TrolleyResource;
 use App\Interfaces\TrolleyRepositoryInterface;
 use App\Models\Trolley;
+use Exception;
 use Illuminate\Support\Facades\DB;
 
 class TrolleyController extends Controller
@@ -30,7 +31,7 @@ class TrolleyController extends Controller
             $data = $this->trolleyRepository->findAll();
             return ApiResponseClass::sendResponse(TrolleyResource::collection($data), '');
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return ApiResponseClass::sendFail('Trolley Delete Fail', '');
         }
         //
@@ -42,7 +43,7 @@ class TrolleyController extends Controller
             $data = $this->trolleyRepository->findByUserId($id);
             return ApiResponseClass::sendResponse(TrolleyResource::collection($data), '');
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return ApiResponseClass::sendResponse("Trolley Find by user $id Fail", $e, 404);
         }
         //
@@ -53,7 +54,7 @@ class TrolleyController extends Controller
         try {
             $data = $this->trolleyRepository->findByUserIdCount($id);
             return ApiResponseClass::sendResponse($data, '');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return ApiResponseClass::sendFail("Trolley Count Fail user id $$id", '');
         }
     }
@@ -77,12 +78,13 @@ class TrolleyController extends Controller
             $trolley = [
                 'qty' => $request->qty,
                 'id_product' => $request->id_product,
+                'option' => $request->option,
                 'id_user' => $request->id_user,
             ];
             $this->trolleyRepository->create($trolley);
             return ApiResponseClass::sendResponse('Trolley Create Successful', '');
 
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             return ApiResponseClass::sendFail('Trolley Create Fail', $ex);
 
         }
@@ -97,7 +99,7 @@ class TrolleyController extends Controller
             $response = $this->trolleyRepository->findId($id);
             return ApiResponseClass::sendResponse(new TrolleyResource($response), '');
 
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             return ApiResponseClass::sendFail("The Data Trolley is not found $id", '');
         }
     }
@@ -120,16 +122,17 @@ class TrolleyController extends Controller
         try {
             $trolley = [
                 'qty' => $request->qty,
-//                'id_checkout' => $request->id_checkout ?? null,
                 'id_product' => $request->id_product,
+                'option' => $request->option,
                 'id_user' => $request->id_user,
+//                'id_checkout' => $request->id_checkout ?? null,
             ];
             DB::beginTransaction();
             $this->trolleyRepository->update($trolley, $id);
 
             DB::commit();
             return ApiResponseClass::sendResponse('Trolley Update Successful', '');
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             DB::rollBack();
             return ApiResponseClass::sendFail('Trolley Update Fail', $ex);
 
@@ -144,7 +147,7 @@ class TrolleyController extends Controller
         try {
             $this->trolleyRepository->delete($id);
             return ApiResponseClass::sendResponse('Trolley Delete Successful', '');
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             return ApiResponseClass::sendFail("Trolley Fail Delete id $id", '');
         }
     }

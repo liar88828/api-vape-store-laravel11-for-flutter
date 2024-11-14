@@ -75,24 +75,24 @@ class ProductController extends Controller
     {
 
         try {
-//            $details = [
-//                'name' => $request->name,
-//                'qty' => $request->qty,
-//                'price' => $request->price,
-//                'description' => $request->description,
-//                'category' => $request->category,
-//                'id_user' => $request->id_user
-//            ];
+            $data = [
+                'name' => $request->name,
+                'qty' => $request->qty,
+                'price' => $request->price,
+                'description' => $request->description,
+                'category' => $request->category,
+                'id_user' => $request->id_user
+            ];
 
 //            DB::beginTransaction();
 //            print_r($request->toArray());
-            $response = $this->productRepository->store($request->toArray());
+            $response = $this->productRepository->store($data);
 
 //            DB::commit();
-            return ApiResponseClass::sendResponse(new ProductResource($response), 'Product Create Successful', 200);
+            return ApiResponseClass::sendResponse(new ProductResource($data), 'Product Create Successful', 200);
 
         } catch (Exception $ex) {
-            return ApiResponseClass::rollback($ex);
+            return ApiResponseClass::sendFail($ex->getMessage());
         }
     }
 
@@ -103,9 +103,9 @@ class ProductController extends Controller
     {
         try {
             $product = $this->productRepository->getById($id);
-            return ApiResponseClass::sendResponse(new ProductResource($product), '', 200);
+            return ApiResponseClass::sendResponse(new ProductResource($product), '', 201);
         } catch (Exception $ex) {
-            return ApiResponseClass::sendFail("The Data Product is not found $id", $ex, 404);
+            return ApiResponseClass::sendFail("The Data Product is not found $id " . $ex->getMessage(), 404);
 
         }
 
@@ -127,7 +127,7 @@ class ProductController extends Controller
     {
 
         try {
-            $details = [
+            $data = [
                 'name' => $request->name,
                 'qty' => $request->qty,
                 'price' => $request->price,
@@ -135,15 +135,13 @@ class ProductController extends Controller
                 'id_user' => $request->id_user
             ];
 //            DB::beginTransaction();
-            $product = $this->productRepository->update($details, $id);
+            $product = $this->productRepository->update($data, $id);
 
 //            DB::commit();
             return ApiResponseClass::sendResponse('Product Update Successful', '', 200);
 
         } catch (Exception $ex) {
-//            DB::disconnect();
-
-            return ApiResponseClass::sendFail('The Product is fail', $ex, 404);
+            return ApiResponseClass::sendFail('The Product is fail :' . $ex, 404);
         }
     }
 

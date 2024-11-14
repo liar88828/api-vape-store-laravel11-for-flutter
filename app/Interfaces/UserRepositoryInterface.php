@@ -9,6 +9,8 @@ interface UserRepositoryInterface
 {
     function findEmail(string $email);
 
+    function findId(string $id);
+
     function validRegister(Request $request): array;
 
     function validLogin(Request $request): array;

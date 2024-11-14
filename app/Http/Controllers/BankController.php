@@ -7,6 +7,8 @@ use App\Http\Requests\StoreBankRequest;
 use App\Http\Requests\UpdateBankRequest;
 use App\Http\Resources\BankResource;
 use App\Interfaces\BankRepositoryInterface;
+use Exception;
+use Illuminate\Http\JsonResponse;
 
 class BankController extends Controller
 {
@@ -22,15 +24,15 @@ class BankController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): JsonResponse
     {
         try {
             $data = $this->bankRepository->findAll();
             return ApiResponseClass::sendResponse($data, '');
 
 
-        } catch (\Exception $exception) {
-            return ApiResponseClass::sendFail('Bank Delete Fail', $exception->getMessage(), 404);
+        } catch (Exception $exception) {
+            return ApiResponseClass::sendFail('Bank Delete Fail', $exception->getMessage());
 
         }
     }
@@ -38,35 +40,41 @@ class BankController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): JsonResponse
     {
-        return ApiResponseClass::sendFail('Bank api create is not implement', '', 301);
+        return ApiResponseClass::sendFail('Bank api create is not implement', 301);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreBankRequest $request)
+    public function store(StoreBankRequest $request): JsonResponse
     {
         try {
 
-            $data = $this->bankRepository->store($request->toArray());
-            return ApiResponseClass::sendResponse(new BankResource($data), 'Bank Create Successful', 201);
-        } catch (\Exception $exception) {
-            return ApiResponseClass::sendFail('Bank Create Fail', $exception->getMessage(), 404);
+            $data = [
+                "name" => $request->name,
+                "phone" => $request->phone,
+                "address" => $request->address,
+                "accounting" => $request->accounting,
+            ];
+            $this->bankRepository->store($data);
+            return ApiResponseClass::sendResponse(new BankResource($data), 'Bank Create Successful');
+        } catch (Exception $exception) {
+            return ApiResponseClass::sendFail('Bank Create Fail' . $exception->getMessage());
         }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show($id): JsonResponse
     {
         try {
             $data = $this->bankRepository->findById($id);
-            return ApiResponseClass::sendResponse(new BankResource($data), "Bank Detail Successful $id", 200);
-        } catch (\Exception $exception) {
-            return ApiResponseClass::sendFail("Bank Detail Fail $id", $exception->getMessage(), 404);
+            return ApiResponseClass::sendResponse(new BankResource($data), "Bank Detail Successful $id", 201);
+        } catch (Exception $exception) {
+            return ApiResponseClass::sendFail("Bank Detail Fail $id " . $exception->getMessage(), 404);
 
         }
     }
@@ -74,36 +82,41 @@ class BankController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit()
+    public function edit(): JsonResponse
     {
-        return ApiResponseClass::sendFail('bank edit not implement', '', 401);
+        return ApiResponseClass::sendFail('bank edit not implement', 301);
 
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateBankRequest $request, $id)
+    public function update(UpdateBankRequest $request, $id): JsonResponse
     {
         try {
-
-            $this->bankRepository->updateId($request->toArray(), $id);
-            return ApiResponseClass::sendResponse($request->all(), "Bank Update Successful $id", 200);
-        } catch (\Exception $exception) {
-            return ApiResponseClass::sendFail("Bank Update Fail $id", $exception->getMessage(), 404);
+            $data = [
+                "name" => $request->name,
+                "phone" => $request->phone,
+                "address" => $request->address,
+                "accounting" => $request->accounting,
+            ];
+            $this->bankRepository->updateId($data, $id);
+            return ApiResponseClass::sendResponse($data, "Bank Update Successful $id");
+        } catch (Exception $exception) {
+            return ApiResponseClass::sendFail("Bank Update Fail $id" . $exception->getMessage(), 404);
         }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
         try {
             $this->bankRepository->deleteId($id);
             return ApiResponseClass::sendResponse('', "Bank Delete Successful $id");
-        } catch (\Exception $exception) {
-            return ApiResponseClass::sendFail("Bank Delete Fail $id", $exception->getMessage());
+        } catch (Exception $exception) {
+            return ApiResponseClass::sendFail("Bank Delete Fail $id" . $exception->getMessage());
         }
     }
 }

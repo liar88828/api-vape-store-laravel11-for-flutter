@@ -13,16 +13,7 @@ use Illuminate\Support\Facades\Route;
 //reference
 //https://medium.com/@1415sandalanka/laravel-11-rest-api-crud-with-best-practices-fcc26505e0d2
 
-//Route::get('/user', function (Request $request) {
-//    return $request->user();
-//})->middleware('auth:sanctum');
-
-
-//Route::post('/tokens/create', function (Request $request) {
-//    $token = $request->user()->createToken('test');
-//    return response()->json(['token' => $token->plainTextToken], 200);
-//});
-
+Route::get('/user/{id}', [UserController::class, 'show']);
 Route::prefix('auth')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::controller(UserController::class)->group(function () {
@@ -37,7 +28,6 @@ Route::prefix('auth')->group(function () {
     Route::controller(UserController::class)->group(function () {
         Route::post('/login', 'login');
         Route::post('/register', 'register');
-//                Route::delete('logout', 'logout');
     });
 });
 
@@ -63,9 +53,7 @@ Route::prefix('/checkout')->group(function () {
         Route::delete('/{id}', 'destroy');
     });
 });
-//Route::apiResource('/checkout', CheckoutController::class);
-//Route::apiResource('/user', ProductController::class);
-//Route::apiResource('/favorite', FavoriteController::class);
+
 Route::prefix('/favorite')->group(function () {
     Route::controller(FavoriteController::class)->group(function () {
         Route::get('/', 'index');
@@ -74,13 +62,11 @@ Route::prefix('/favorite')->group(function () {
         Route::get('/id-list/{id}', 'findByIdList');
         Route::get('/{id}', 'show');
         Route::post('/', 'store');
+        Route::post('/list/{id}', 'addToFavoriteList');
         Route::put('/{id}', 'update');
         Route::delete('/{id}', 'destroy');
     });
 });
-
-
-//Route::apiResource('/product', ProductController::class);
 
 
 Route::prefix('/product')->group(function () {

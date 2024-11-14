@@ -25,7 +25,7 @@ class UpdateFavoriteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id_user'=>'required|integer',
+//            'id_user'=>'required|integer',
 //            'id_product'=>'required|integer',
             'title'=>'required|string',
             'description'=>'required|string',
