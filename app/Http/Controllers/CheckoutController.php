@@ -7,6 +7,7 @@ use App\Http\Requests\StoreCheckoutRequest;
 use App\Http\Requests\UpdateCheckoutRequest;
 use App\Http\Resources\CheckoutResource;
 use App\Interfaces\CheckoutRepositoryInterface;
+use App\Models\Checkout;
 use Exception;
 use Illuminate\Http\JsonResponse;
 
@@ -60,25 +61,27 @@ class CheckoutController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * @param Checkout|StoreCheckoutRequest $request
+     * @return JsonResponse
      */
     public function store(StoreCheckoutRequest $request): JsonResponse
     {
         try {
-//            $checkout = [
-//                'id_user' => $request->id_user,
-//                'total' => $request->total,
-//                'payment_method' => $request->payment_method,
-//                'payment_price' => $request->payment_price,
-//                'delivery_method' => $request->delivery_method,
-//                'delivery_price' => $request->delivery_price,
-//            ];
-//            DB::beginTransaction();
-            $data = $this->checkoutRepository->create($request->toArray());
-//            DB::commit();
-            return ApiResponseClass::sendResponse(new CheckoutResource($data), 'Checkout Create Successful');
+            $checkout = [
+                'id_user' => $request->id_user,
+                'total' => $request->total,
+                'payment_method' => $request->payment_method,
+                'payment_price' => $request->payment_price,
+                'delivery_method' => $request->delivery_method,
+                'delivery_price' => $request->delivery_price,
+            ];
+            $id_trolley = $request->id_trolley;
+
+
+            $data = $this->checkoutRepository->create($checkout, $id_trolley);
+            return ApiResponseClass::sendResponse($data, 'Checkout Create Successful');
 
         } catch (Exception $ex) {
-//            return ApiResponseClass::rollback($ex);
             return ApiResponseClass::sendFail('Checkout Create Fail ' . $ex->getMessage(), 404);
 
         }

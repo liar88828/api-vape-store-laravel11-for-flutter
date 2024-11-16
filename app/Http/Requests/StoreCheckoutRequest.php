@@ -31,6 +31,8 @@ class StoreCheckoutRequest extends FormRequest
             'payment_price'=>'required|integer',
             'delivery_method'=>'required|string',
             'delivery_price'=>'required|integer',
+            'id_trolley' => 'required|array', // Ensure it's an array
+            'id_trolley.*' => 'integer',     // Ensure each element is an integer
         ];
     }
     public function failedValidation(Validator  $validator)

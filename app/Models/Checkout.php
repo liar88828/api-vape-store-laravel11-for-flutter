@@ -16,6 +16,7 @@ class Checkout extends Model
     public int $payment_price;
     public string $delivery_method;
     public int $delivery_price;
+    public array $id_trolley;
 
     use HasFactory;
 
@@ -27,4 +28,10 @@ class Checkout extends Model
         'delivery_method',
         'delivery_price',
     ];
+
+    public function trolleys()
+    {
+        return $this->hasMany(Trolley::class);
+    }
+
 }

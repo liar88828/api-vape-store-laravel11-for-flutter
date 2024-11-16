@@ -32,7 +32,7 @@ class TrolleyController extends Controller
             return ApiResponseClass::sendResponse(TrolleyResource::collection($data), '');
 
         } catch (Exception $e) {
-            return ApiResponseClass::sendFail('Trolley Delete Fail', '');
+            return ApiResponseClass::sendFail('Trolley Delete Fail' . $e->getMessage());
         }
         //
     }
@@ -41,10 +41,22 @@ class TrolleyController extends Controller
     {
         try {
             $data = $this->trolleyRepository->findByUserId($id);
-            return ApiResponseClass::sendResponse(TrolleyResource::collection($data), '');
+            return ApiResponseClass::sendResponse(TrolleyResource::collection($data), 'success');
 
         } catch (Exception $e) {
-            return ApiResponseClass::sendResponse("Trolley Find by user $id Fail", $e, 404);
+            return ApiResponseClass::sendResponse("Trolley Find by user $id Fail " . $e->getMessage());
+        }
+        //
+    }
+
+    public function findByCheckoutId($id)
+    {
+        try {
+            $data = $this->trolleyRepository->findByCheckoutId($id);
+            return ApiResponseClass::sendResponse(TrolleyResource::collection($data), 'success');
+
+        } catch (Exception $e) {
+            return ApiResponseClass::sendResponse("Trolley Find by user $id Fail " . $e->getMessage());
         }
         //
     }
@@ -53,9 +65,9 @@ class TrolleyController extends Controller
     {
         try {
             $data = $this->trolleyRepository->findByUserIdCount($id);
-            return ApiResponseClass::sendResponse($data, '');
+            return ApiResponseClass::sendResponse($data, 'success');
         } catch (Exception $e) {
-            return ApiResponseClass::sendFail("Trolley Count Fail user id $$id", '');
+            return ApiResponseClass::sendFail("Trolley Count Fail user id $$id " . $e->getMessage());
         }
     }
 
@@ -65,7 +77,7 @@ class TrolleyController extends Controller
      */
     public function create()
     {
-        return ApiResponseClass::sendFail('not implement', '', 301);
+        return ApiResponseClass::sendFail('not implement', 301);
 
     }
 
@@ -76,16 +88,18 @@ class TrolleyController extends Controller
     {
         try {
             $trolley = [
-                'qty' => $request->qty,
                 'id_product' => $request->id_product,
-                'option' => $request->option,
                 'id_user' => $request->id_user,
+                'type' => $request->type,
+                'qty' => $request->qty,
             ];
+//            print_r($trolley);
             $this->trolleyRepository->create($trolley);
-            return ApiResponseClass::sendResponse('Trolley Create Successful', '');
 
-        } catch (Exception $ex) {
-            return ApiResponseClass::sendFail('Trolley Create Fail', $ex);
+            return ApiResponseClass::sendResponse($trolley, 'Trolley Create Successful');
+
+        } catch (Exception $e) {
+            return ApiResponseClass::sendFail('Trolley Create Fail ' . $e->getMessage());
 
         }
     }
@@ -123,7 +137,7 @@ class TrolleyController extends Controller
             $trolley = [
                 'qty' => $request->qty,
                 'id_product' => $request->id_product,
-                'option' => $request->option,
+                'type' => $request->type,
                 'id_user' => $request->id_user,
 //                'id_checkout' => $request->id_checkout ?? null,
             ];
@@ -132,9 +146,9 @@ class TrolleyController extends Controller
 
             DB::commit();
             return ApiResponseClass::sendResponse('Trolley Update Successful', '');
-        } catch (Exception $ex) {
+        } catch (Exception $e) {
             DB::rollBack();
-            return ApiResponseClass::sendFail('Trolley Update Fail', $ex);
+            return ApiResponseClass::sendFail('Trolley Update Fail' . $e->getMessage());
 
         }
     }
@@ -147,8 +161,8 @@ class TrolleyController extends Controller
         try {
             $this->trolleyRepository->delete($id);
             return ApiResponseClass::sendResponse('Trolley Delete Successful', '');
-        } catch (Exception $ex) {
-            return ApiResponseClass::sendFail("Trolley Fail Delete id $id", '');
+        } catch (Exception $e) {
+            return ApiResponseClass::sendFail("Trolley Fail Delete id $id" . $e->getMessage());
         }
     }
 }

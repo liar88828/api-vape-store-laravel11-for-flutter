@@ -28,7 +28,7 @@ class StoreTrolleyRequest extends FormRequest
 //            'id_checkout'=>'required',
             'id_product'=>'required|integer',
             'id_user'=>'required|integer',
-            'option' => 'required|string',
+            'type' => 'required|string',
             'qty'=>'required|integer',
         ];
     }

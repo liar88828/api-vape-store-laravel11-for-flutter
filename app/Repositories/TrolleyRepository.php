@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Interfaces\TrolleyRepositoryInterface;
 use App\Models\Trolley;
+use Exception;
 
 class TrolleyRepository implements TrolleyRepositoryInterface
 {
@@ -24,8 +25,21 @@ class TrolleyRepository implements TrolleyRepositoryInterface
             ->get(['trolleys.*',
                 'trolleys.id as id_trolley',
                 'trolleys.id_user as trolley_id_user',
+                'trolleys.qty as trolley_qty',
                 'products.*']);
 
+    }
+
+    public function findByCheckoutId($id)
+    {
+        return Trolley::query()
+            ->join('products', 'products.id', '=', 'trolleys.id_product')
+            ->where('trolleys.id_checkout', $id)
+            ->get(['trolleys.*',
+                'trolleys.id as id_trolley',
+                'trolleys.id_user as trolley_id_user',
+                'trolleys.qty as trolley_qty',
+                'products.*']);
     }
 
     public function findByUserIdCount($id)
@@ -39,10 +53,27 @@ class TrolleyRepository implements TrolleyRepositoryInterface
         return Trolley::query()->findOrFail($id);
     }
 
+    /**
+     * @param Trolley $data
+     * @return bool
+     */
     public function create(array $data)
     {
-        return Trolley::query()->create($data);
-
+        $response = Trolley::query()
+            ->where([
+                "id_product" => $data['id_product'],
+                "id_user" => $data['id_user'],
+                'type' => $data['type']
+            ])
+            ->first();
+//        print_r($response['id']);
+        if ($response) {
+            return Trolley::query()
+                ->where('id', $response['id'])
+                ->update(["qty" => $data['qty']]);
+        } else {
+            return Trolley::query()->create($data);
+        }
     }
 
     public function update(array $data, $id)
@@ -62,7 +93,7 @@ class TrolleyRepository implements TrolleyRepositoryInterface
     {
         $response = Trolley::destroy($id);
         if ($response == '0') {
-            throw new \Exception("Fail Delete id $id");
+            throw new Exception("Fail Delete id $id");
         } else {
             return true;
         }

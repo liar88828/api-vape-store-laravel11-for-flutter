@@ -1,8 +1,8 @@
 @api= http://localhost:8000/api
 @path= checkout
+
 ### GET ALL DATA
 GET {{api}}/{{path}}
-
 
 ### GET ID DATA
 GET {{api}}/{{path}}/4
@@ -10,18 +10,39 @@ GET {{api}}/{{path}}/4
 ### GET ID DATA
 GET {{api}}/{{path}}/id-user/14
 
+### CREATE DATA
+POST {{api}}/{{path}}
+Content-Type: application/json
+
+{
+    "id_user": 14,
+    "id_trolley": [
+        8,
+        7,
+        6
+    ],
+    "total": 200,
+    "delivery_price": 23,
+    "payment_price": 23,
+    "payment_method": "mandiri",
+    "delivery_method": "jnt"
+}
 
 ### CREATE DATA
 POST {{api}}/{{path}}
 Content-Type: application/json
 
 {
-    "id_user": 1,
-    "total": 200,
-    "delivery_price": 23,
-    "payment_price": 23,
-    "payment_method": "mandiri",
-    "delivery_method": "jnt"
+    "id_user": 14,
+    "id_trolley": [
+        30,
+        31
+    ],
+    "total": 1,
+    "delivery_price": 200,
+    "payment_price": 100,
+    "payment_method": "jnt",
+    "delivery_method": "mandiri"
 }
 
 ### UPDATE DATA

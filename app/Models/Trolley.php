@@ -21,6 +21,6 @@ class Trolley extends Model
         'id_product',
         'id_user',
         'qty',
-        'option',
+        'type',
     ];
 }

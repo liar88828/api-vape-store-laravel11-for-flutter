@@ -35,9 +35,10 @@ Route::prefix('/trolley')->group(function () {
     Route::controller(TrolleyController::class)->group(function () {
         Route::get('/', 'index');
         Route::get('/{id}', 'show');
+        Route::get('/id-checkout/{id}', 'findByCheckoutId');
         Route::get('/id-user/{id}', 'findByUserId');
         Route::get('/id-user/count/{id}', 'findByUserIdCount');
-        Route::post('/', 'create');
+        Route::post('/', 'store');
         Route::put('/{id}', 'update');
         Route::delete('/{id}', 'destroy');
     });

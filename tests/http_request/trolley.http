@@ -14,11 +14,27 @@ Content-Type: application/json
 GET {{api}}/{{path}}/id-user/14
 Content-Type: application/json
 
+### GET USER BY ID DATA
+GET {{api}}/{{path}}/id-checkout/103
+Content-Type: application/json
+
+
 
 ### GET USER BY ID DATA
 GET {{api}}/{{path}}/id-user/count/1
 Content-Type: application/json
 
+
+### CREATE DATA
+POST {{api}}/{{path}}
+Content-Type: application/json
+
+{
+    "qty": 1,
+    "id_product": 30,
+    "id_user": 13,
+    "type": "90 ML"
+}
 
 ### UPDATE DATA
 PUT {{api}}/{{path}}/null

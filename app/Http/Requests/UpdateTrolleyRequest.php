@@ -29,7 +29,7 @@ class UpdateTrolleyRequest extends FormRequest
             'id_product'=>'required|integer',
             'id_user'=>'required|integer',
             'qty'=>'required|integer',
-            'option' => 'required|string',
+            'type' => 'required|string',
 
         ];
     }

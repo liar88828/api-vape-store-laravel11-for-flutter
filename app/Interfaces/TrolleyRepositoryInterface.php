@@ -8,6 +8,8 @@ interface TrolleyRepositoryInterface
 
     public function findByUserId($id);
 
+    public function findByCheckoutId($id);
+
     public function findByUserIdCount($id);
 
     public function findId($id);
