@@ -22,6 +22,7 @@ class TrolleyRepository implements TrolleyRepositoryInterface
         return Trolley::query()
             ->join('products', 'products.id', '=', 'trolleys.id_product')
             ->where('trolleys.id_user', $id)
+            ->where('trolleys.is_checkout', false)
             ->get(['trolleys.*',
                 'trolleys.id as id_trolley',
                 'trolleys.id_user as trolley_id_user',
@@ -35,6 +36,7 @@ class TrolleyRepository implements TrolleyRepositoryInterface
         return Trolley::query()
             ->join('products', 'products.id', '=', 'trolleys.id_product')
             ->where('trolleys.id_checkout', $id)
+            ->where('trolleys.is_checkout', true)
             ->get(['trolleys.*',
                 'trolleys.id as id_trolley',
                 'trolleys.id_user as trolley_id_user',

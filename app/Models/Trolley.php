@@ -13,6 +13,8 @@ class Trolley extends Model
     public int $id_product;
     public int $id_user;
     public int $qty;
+    public int $is_checkout;
+    public int $type;
 
     use HasFactory;
 
@@ -22,5 +24,6 @@ class Trolley extends Model
         'id_user',
         'qty',
         'type',
+        "is_checkout"
     ];
 }

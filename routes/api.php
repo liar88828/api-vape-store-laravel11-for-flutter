@@ -48,6 +48,7 @@ Route::prefix('/checkout')->group(function () {
     Route::controller(CheckoutController::class)->group(function () {
         Route::get('/', 'index');
         Route::get('/id-user/{id}', 'findByIdUser');
+        Route::get('/id-checkout/{id}', 'findAllCheckout');
         Route::get('/{id}', 'show');
         Route::post('/', 'store');
         Route::put('/{id}', 'update');
@@ -68,7 +69,6 @@ Route::prefix('/favorite')->group(function () {
         Route::delete('/{id}', 'destroy');
     });
 });
-
 
 Route::prefix('/product')->group(function () {
     Route::controller(ProductController::class)->group(function () {

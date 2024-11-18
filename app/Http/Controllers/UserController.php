@@ -49,6 +49,9 @@ class UserController extends Controller
         try {
             $this->userRepository->validLogin($request);
             $user = User::query()->where('email', $request->email)->first();
+            if (!$user) {
+                throw new Exception('User is not found');
+            }
             $this->userRepository->checkPassword($request->password, $user['password']);
             $token = $user->createToken('myAppToken')->plainTextToken;
             return response()->json([
@@ -57,7 +60,8 @@ class UserController extends Controller
                 'message' => 'User logged in successfully!',
             ]);
         } catch (Exception $exception) {
-            return ApiResponseClass::sendFail("fail login : {$exception->getMessage()}");
+//            print_r($exception->getMessage());
+            return ApiResponseClass::sendFail("Fail login : {$exception->getMessage()}");
 
         }
     }

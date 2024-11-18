@@ -9,6 +9,7 @@ use App\Http\Resources\TrolleyResource;
 use App\Interfaces\TrolleyRepositoryInterface;
 use App\Models\Trolley;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
 class TrolleyController extends Controller
@@ -44,10 +45,10 @@ class TrolleyController extends Controller
             return ApiResponseClass::sendResponse(TrolleyResource::collection($data), 'success');
 
         } catch (Exception $e) {
-            return ApiResponseClass::sendResponse("Trolley Find by user $id Fail " . $e->getMessage());
+            return ApiResponseClass::sendFail("Trolley Find by user $id Fail " . $e->getMessage());
         }
-        //
     }
+
 
     public function findByCheckoutId($id)
     {
@@ -56,12 +57,12 @@ class TrolleyController extends Controller
             return ApiResponseClass::sendResponse(TrolleyResource::collection($data), 'success');
 
         } catch (Exception $e) {
-            return ApiResponseClass::sendResponse("Trolley Find by user $id Fail " . $e->getMessage());
+            return ApiResponseClass::sendFail("Trolley Find by user $id Fail " . $e->getMessage());
         }
         //
     }
 
-    public function findByUserIdCount($id)
+    public function findByUserIdCount($id): JsonResponse
     {
         try {
             $data = $this->trolleyRepository->findByUserIdCount($id);
@@ -83,10 +84,13 @@ class TrolleyController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * @param mixed|StoreTrolleyRequest|Trolley $request
+     * @return JsonResponse
      */
     public function store(StoreTrolleyRequest $request)
     {
         try {
+            /** @var Trolley $trolley */
             $trolley = [
                 'id_product' => $request->id_product,
                 'id_user' => $request->id_user,

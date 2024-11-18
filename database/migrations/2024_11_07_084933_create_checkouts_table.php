@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('payment_price');
             $table->string('delivery_method');
             $table->integer('delivery_price');
+            $table->boolean('is_checkout');
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });

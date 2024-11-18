@@ -30,6 +30,7 @@ class StoreProductRequest extends FormRequest
             'qty' => 'required|integer',
             'price' => 'required|integer',
             'category' => 'required|string',
+            'brand' => 'required|string',
             'description' => 'required|string',
         ];
     }

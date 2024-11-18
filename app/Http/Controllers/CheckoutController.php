@@ -10,6 +10,7 @@ use App\Interfaces\CheckoutRepositoryInterface;
 use App\Models\Checkout;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 class CheckoutController extends Controller
 {
@@ -49,6 +50,19 @@ class CheckoutController extends Controller
         }
     }
 
+    public function findAllCheckout($id): JsonResponse
+    {
+        try {
+            $data = $this->checkoutRepository->findAllCheckout($id);
+            return ApiResponseClass::sendResponse($data, 'success', 201);
+
+        } catch (Exception $e) {
+
+            return ApiResponseClass::sendFail("Checkout Delete Fail id $$id : {$e->getMessage()}");
+
+        }
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -75,17 +89,19 @@ class CheckoutController extends Controller
                 'delivery_method' => $request->delivery_method,
                 'delivery_price' => $request->delivery_price,
             ];
-            $id_trolley = $request->id_trolley;
+            $id_product = $request->id_trolley;
 
 
-            $data = $this->checkoutRepository->create($checkout, $id_trolley);
+            $data = $this->checkoutRepository->createMany($checkout, $id_product);
             return ApiResponseClass::sendResponse($data, 'Checkout Create Successful');
 
         } catch (Exception $ex) {
+            DB::rollBack();
             return ApiResponseClass::sendFail('Checkout Create Fail ' . $ex->getMessage(), 404);
 
         }
     }
+
 
     /**
      * Display the specified resource.

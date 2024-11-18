@@ -15,7 +15,7 @@ GET {{api}}/{{path}}/id-user/14
 Content-Type: application/json
 
 ### GET USER BY ID DATA
-GET {{api}}/{{path}}/id-checkout/103
+GET {{api}}/{{path}}/id-checkout/130
 Content-Type: application/json
 
 

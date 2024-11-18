@@ -29,6 +29,7 @@ Content-Type: application/json
     "price": 123,
     "id_user": 14,
     "category": "vape",
+    "brand": "pt enak",
     "description": "s simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry"
 
 }

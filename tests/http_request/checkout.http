@@ -8,7 +8,15 @@ GET {{api}}/{{path}}
 GET {{api}}/{{path}}/4
 
 ### GET ID DATA
+
 GET {{api}}/{{path}}/id-user/14
+
+
+### GET USER BY ID DATA
+GET {{api}}/{{path}}/id-checkout/103
+Content-Type: application/json
+
+
 
 ### CREATE DATA
 POST {{api}}/{{path}}
@@ -17,9 +25,9 @@ Content-Type: application/json
 {
     "id_user": 14,
     "id_trolley": [
-        8,
-        7,
-        6
+        91,
+        93,
+        94
     ],
     "total": 200,
     "delivery_price": 23,
@@ -57,6 +65,7 @@ Content-Type: application/json
     "payment_method": "mandiri update",
     "delivery_method": "jnt"
 }
+
 ### DELETE DATA
 DELETE {{api}}/{{path}}/4
 

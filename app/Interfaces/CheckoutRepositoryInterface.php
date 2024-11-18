@@ -10,7 +10,11 @@ interface CheckoutRepositoryInterface
 
     public function findByIdUser(int $id);
 
-    public function create(array $checkout, array $id_trolley);
+    public function findAllCheckout(int $id);
+
+    public function createSingle(array $checkout, array $id_trolley);
+
+    public function createMany(array $checkout, array $id_trolley);
 
     public function update(array $data, int $id);
 
