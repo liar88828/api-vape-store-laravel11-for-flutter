@@ -18,6 +18,8 @@ interface FavoriteRepositoryInterface
 
     public function addToFavoriteList(array $data);
 
+    public function deleteToFavoriteList(int $id);
+
     public function update(int $id, array $data);
 
     public function removeId(int $id);

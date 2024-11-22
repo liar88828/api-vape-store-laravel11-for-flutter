@@ -8,6 +8,7 @@ use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -22,7 +23,7 @@ class UserController extends Controller
     public function register(Request $request)
     {
         try {
-
+            Log::info('User Register');
             $this->userRepository->validRegister($request);
             $user = User::create([
                 'name' => $request->name,
@@ -47,6 +48,7 @@ class UserController extends Controller
     public function login(Request $request)
     {
         try {
+            Log::info("User Login");
             $this->userRepository->validLogin($request);
             $user = User::query()->where('email', $request->email)->first();
             if (!$user) {

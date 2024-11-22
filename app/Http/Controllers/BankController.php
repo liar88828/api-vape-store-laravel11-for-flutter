@@ -9,6 +9,7 @@ use App\Http\Resources\BankResource;
 use App\Interfaces\BankRepositoryInterface;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 class BankController extends Controller
 {
@@ -27,6 +28,7 @@ class BankController extends Controller
     public function index(): JsonResponse
     {
         try {
+            Log::info('from bank all');
             $data = $this->bankRepository->findAll();
             return ApiResponseClass::sendResponse($data, '');
 
@@ -59,7 +61,7 @@ class BankController extends Controller
                 "accounting" => $request->accounting,
             ];
             $this->bankRepository->store($data);
-            return ApiResponseClass::sendResponse(new BankResource($data), 'Bank Create Successful');
+            return ApiResponseClass::sendResponse(BankResource::collection($data), 'Bank Create Successful');
         } catch (Exception $exception) {
             return ApiResponseClass::sendFail('Bank Create Fail' . $exception->getMessage());
         }
@@ -72,7 +74,7 @@ class BankController extends Controller
     {
         try {
             $data = $this->bankRepository->findById($id);
-            return ApiResponseClass::sendResponse(new BankResource($data), "Bank Detail Successful $id", 201);
+            return ApiResponseClass::sendResponse(BankResource::collection($data), "Bank Detail Successful $id", 201);
         } catch (Exception $exception) {
             return ApiResponseClass::sendFail("Bank Detail Fail $id " . $exception->getMessage(), 404);
 
@@ -84,7 +86,7 @@ class BankController extends Controller
      */
     public function edit(): JsonResponse
     {
-        return ApiResponseClass::sendFail('bank edit not implement', 301);
+        return ApiResponseClass::notImplement();
 
     }
 

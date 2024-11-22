@@ -41,6 +41,11 @@ Content-Type: application/json
 DELETE {{api}}/{{path}}/4
 
 
+###//    "id_product": "2",
+### DELETE DATA
+DELETE {{api}}/{{path}}/list/3
+
+
 ### ADD FAVORITE LIST DATA
 POST {{api}}/{{path}}/list/14
 Content-Type: application/json

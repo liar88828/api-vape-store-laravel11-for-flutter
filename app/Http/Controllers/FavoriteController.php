@@ -10,6 +10,7 @@ use App\Http\Resources\FavoriteResource;
 use App\Interfaces\FavoriteRepositoryInterface;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 class FavoriteController extends Controller
 {
@@ -29,8 +30,8 @@ class FavoriteController extends Controller
             $data = $this->favoriteRepository->findAll();
             return ApiResponseClass::sendResponse(FavoriteResource::collection($data), 'success find all data');
 
-        } catch (Exception $e) {
-            return ApiResponseClass::sendFail("Favorite Delete Fail :{$e->getMessage()} ");
+        } catch (Exception $exception) {
+            return ApiResponseClass::sendFail("Favorite Delete Fail :{$exception->getMessage()} ");
         }
         //
     }
@@ -38,11 +39,12 @@ class FavoriteController extends Controller
     public function findByIdUser($id): JsonResponse
     {
         try {
+            Log::info("favorite findByIdUser : $id");
             $data = $this->favoriteRepository->findByIdUser($id);
             return ApiResponseClass::sendResponse(FavoriteResource::collection($data), "Success Get Data Favorite by user $id", 201);
 
-        } catch (Exception $e) {
-            return ApiResponseClass::sendFail('Favorite Create Fail : ' . $e->getMessage());
+        } catch (Exception $exception) {
+            return ApiResponseClass::sendFail('Favorite Create Fail : ' . $exception->getMessage());
         }
         //
     }
@@ -53,8 +55,8 @@ class FavoriteController extends Controller
             $data = $this->favoriteRepository->findByIdList($id);
             return ApiResponseClass::sendResponse(FavoriteResource::collection($data), "Success Get Data Favorite by user $id", 201);
 
-        } catch (Exception $e) {
-            return ApiResponseClass::sendFail('Favorite Create Fail :' . $e->getMessage());
+        } catch (Exception $exception) {
+            return ApiResponseClass::sendFail('Favorite Create Fail :' . $exception->getMessage());
         }
         //
     }
@@ -65,8 +67,8 @@ class FavoriteController extends Controller
             $data = $this->favoriteRepository->findByIdUserCount($id);
             return ApiResponseClass::sendResponse($data, "Success Get Data Favorite by user $id", 201);
 
-        } catch (Exception $e) {
-            return ApiResponseClass::sendFail('Favorite Create Fail : ' . $e->getMessage());
+        } catch (Exception $exception) {
+            return ApiResponseClass::sendFail('Favorite Create Fail : ' . $exception->getMessage());
         }
         //
     }
@@ -113,11 +115,25 @@ class FavoriteController extends Controller
 //            print_r($data);
             $this->favoriteRepository->addToFavoriteList($data);
             return ApiResponseClass::sendResponse($data, 'Favorite Create Successful add favorite list');
-        } catch (Exception $ex) {
-            return ApiResponseClass::sendFail('Fail Create Favorite ' . $ex->getMessage(), 400);
+        } catch (Exception $exception) {
+            return ApiResponseClass::sendFail('Fail Create Favorite ' . $exception->getMessage(), 400);
 //
         }
     }
+
+    public function deleteToFavoriteList($id): JsonResponse
+    {
+        try {
+
+            $this->favoriteRepository->deleteToFavoriteList($id);
+            return ApiResponseClass::sendResponse($id, 'Success Delete Favorite List');
+        } catch (Exception $exception) {
+            return ApiResponseClass::sendFail('Fail Delete Favorite ' . $exception->getMessage(), 400);
+//
+        }
+    }
+
+
 
     /**
      * Display the specified resource.
@@ -160,9 +176,9 @@ class FavoriteController extends Controller
             $this->favoriteRepository->update($id, $data);
             return ApiResponseClass::sendResponse($data, 'Favorite Update Successful');
 
-        } catch (Exception $ex) {
+        } catch (Exception $exception) {
 //            return ApiResponseClass::rollback($ex);
-            return ApiResponseClass::sendFail("Fail Update Favorite : {$ex->getMessage()}");
+            return ApiResponseClass::sendFail("Fail Update Favorite : {$exception->getMessage()}");
 
         }
     }
@@ -176,8 +192,8 @@ class FavoriteController extends Controller
             $this->favoriteRepository->removeId($id);
             return ApiResponseClass::sendResponse("Favorite Delete Successful $id", "success delete favorite id :$id");
 
-        } catch (Exception $ex) {
-            return ApiResponseClass::sendFail("Favorite Delete Fail id $id : {$ex->getMessage()}", 404);
+        } catch (Exception $exception) {
+            return ApiResponseClass::sendFail("Favorite Delete Fail id $id : {$exception->getMessage()}", 404);
         }
     }
 }

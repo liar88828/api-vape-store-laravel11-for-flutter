@@ -65,6 +65,7 @@ Route::prefix('/favorite')->group(function () {
         Route::get('/{id}', 'show');
         Route::post('/', 'store');
         Route::post('/list/{id}', 'addToFavoriteList');
+        Route::delete('/list/{id}', 'deleteToFavoriteList');
         Route::put('/{id}', 'update');
         Route::delete('/{id}', 'destroy');
     });

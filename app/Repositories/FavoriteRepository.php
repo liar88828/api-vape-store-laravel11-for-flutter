@@ -88,4 +88,12 @@ class FavoriteRepository implements FavoriteRepositoryInterface
     }
 
 
+    public function deleteToFavoriteList(int $id)
+    {
+        $response = FavoriteList::query()->where('id', $id)->delete();
+        if ($response == '0') {
+            throw  new Exception('fail delete favorite');
+        }
+
+    }
 }

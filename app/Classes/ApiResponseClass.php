@@ -44,8 +44,19 @@ class ApiResponseClass
             'message' => $message
         ];
         if (!empty($message)) {
+            Log::stack(['stack'])->error($message);
             $response['message'] = $message;
         }
+        return response()->json($response, $code);
+    }
+
+    public static function notImplement(int $code = 301): JsonResponse
+    {
+        Log::debug("The API instance is on fire caused by:", ['user' => 1]);
+        $response = [
+            'success' => false,
+            'message' => 'redirect not Implement'
+        ];
         return response()->json($response, $code);
     }
 }

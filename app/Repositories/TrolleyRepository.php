@@ -46,7 +46,9 @@ class TrolleyRepository implements TrolleyRepositoryInterface
 
     public function findByUserIdCount($id)
     {
-        return Trolley::query()->where('id_user', $id)->count();
+        return Trolley::query()->where('id_user', $id)
+            ->where('is_checkout', false)
+            ->count();
 
     }
 
@@ -65,7 +67,8 @@ class TrolleyRepository implements TrolleyRepositoryInterface
             ->where([
                 "id_product" => $data['id_product'],
                 "id_user" => $data['id_user'],
-                'type' => $data['type']
+                'type' => $data['type'],
+                'is_checkout' => false
             ])
             ->first();
 //        print_r($response['id']);

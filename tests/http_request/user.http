@@ -10,6 +10,9 @@ GET {{api}}/user/14
 POST {{api}}//tokens/create
 
 ### GET ALL DATA
+GET {{api}}/{{path}}/id-user/14
+
+### GET ALL DATA
 GET {{api}}/{{path}}/user
 
 ### GET ALL DATA

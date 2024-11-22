@@ -41,7 +41,7 @@ class DeliveryController extends Controller
      */
     public function create(): JsonResponse
     {
-        return ApiResponseClass::sendFail('Delivery api create is not implement', 301);
+        return ApiResponseClass::notImplement();
     }
 
     /**
@@ -77,7 +77,7 @@ class DeliveryController extends Controller
      */
     public function edit(): JsonResponse
     {
-        return ApiResponseClass::sendFail('bank edit not implement', 301);
+        return ApiResponseClass::notImplement();
 
     }
 
