@@ -164,7 +164,7 @@ class TrolleyController extends Controller
     {
         try {
             $this->trolleyRepository->delete($id);
-            return ApiResponseClass::sendResponse('Trolley Delete Successful', '');
+            return ApiResponseClass::sendResponse("Trolley Delete Successful", "success delete $id");
         } catch (Exception $e) {
             return ApiResponseClass::sendFail("Trolley Fail Delete id $id" . $e->getMessage());
         }

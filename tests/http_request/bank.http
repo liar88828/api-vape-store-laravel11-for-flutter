@@ -5,7 +5,7 @@
 GET {{api}}/{{path}}
 
 ### GET ALL DATA
-GET {{api}}/{{path}}/1
+GET {{api}}/{{path}}/14
 
 
 ### CREATE

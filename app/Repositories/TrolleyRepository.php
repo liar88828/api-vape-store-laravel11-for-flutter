@@ -68,7 +68,8 @@ class TrolleyRepository implements TrolleyRepositoryInterface
                 "id_product" => $data['id_product'],
                 "id_user" => $data['id_user'],
                 'type' => $data['type'],
-                'is_checkout' => false
+                'is_checkout' => false,
+                "qty" => $data['qty']
             ])
             ->first();
 //        print_r($response['id']);

@@ -6,6 +6,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Log;
 
 class StoreFavoriteRequest extends FormRequest
 {
@@ -24,6 +25,7 @@ class StoreFavoriteRequest extends FormRequest
      */
     public function rules(): array
     {
+
         return [
             'id_user'=>'required|integer',
 //            'id_product'=>'required|integer',
@@ -35,6 +37,8 @@ class StoreFavoriteRequest extends FormRequest
 
     public function failedValidation(Validator  $validator)
     {
+        Log::error($validator->errors());
+
         throw new HttpResponseException(response()->json([
             'success'   => false,
             'message'   => 'Validation errors',

@@ -5,7 +5,7 @@
 GET {{api}}/{{path}}
 
 ### GET ID DATA
-GET {{api}}/{{path}}/4
+GET {{api}}/{{path}}/139
 
 ### GET ID DATA
 

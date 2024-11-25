@@ -50,7 +50,8 @@ Route::prefix('/checkout')->group(function () {
         Route::get('/id-user/{id}', 'findByIdUser');
         Route::get('/id-checkout/{id}', 'findAllCheckout');
         Route::get('/{id}', 'show');
-        Route::post('/', 'store');
+        Route::post('/many', 'storeMany');
+        Route::post('/one', 'storeOne');
         Route::put('/{id}', 'update');
         Route::delete('/{id}', 'destroy');
     });

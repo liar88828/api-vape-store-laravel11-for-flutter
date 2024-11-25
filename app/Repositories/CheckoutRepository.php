@@ -48,22 +48,56 @@ class CheckoutRepository implements CheckoutRepositoryInterface
      */
     public function createMany(array $checkout, array $id_trolley)
     {
-        DB::beginTransaction();
-
-        $response = Checkout::query()->create($checkout);
-
-        if ($response) {
-            foreach ($id_trolley as $id) {
-                Trolley::query()->where("id", $id)->update([
-                    'id_checkout' => $response['id'],
-                    'is_checkout' => true
-                ]);
+        try {
+            DB::beginTransaction();
+            $response = Checkout::query()->create($checkout);
+            if ($response) {
+                foreach ($id_trolley as $id) {
+                    Trolley::query()->where("id", $id)->update([
+                        'id_checkout' => $response['id'],
+                        'is_checkout' => true
+                    ]);
+                }
+                DB::commit();
+                return $response;
+            } else {
+                DB::rollBack();
+                throw new Exception('Fail Create Checkout');
             }
-            DB::commit();
-            return $response;
-        } else {
-            throw new Exception('Fail Create Checkout');
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw new Exception($e->getMessage());
         }
+    }
+
+
+    public function createOne(array $checkout, array $product)
+    {
+        try {
+            DB::beginTransaction();
+            $response = Checkout::query()->create($checkout);
+            if ($response) {
+                Trolley::query()->create([
+                    'id_checkout' => $response['id'],
+                    'is_checkout' => true,
+                    'id_product' => $product['id_product'],
+
+                    "id_user" => $response['id_user'],
+                    'type' => $product['type'],
+                    'qty' => $product['qty'],
+
+                ]);
+                DB::commit();
+                return $response;
+            } else {
+                DB::rollBack();
+                throw new Exception('Fail Create Checkout');
+            }
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw new Exception($e->getMessage());
+        }
+        // TODO: Implement createSingle() method.
     }
 
     public function update(array $data, int $id)
@@ -90,8 +124,4 @@ class CheckoutRepository implements CheckoutRepositoryInterface
     }
 
 
-    public function createSingle(array $checkout, array $id_trolley)
-    {
-        // TODO: Implement createSingle() method.
-    }
 }

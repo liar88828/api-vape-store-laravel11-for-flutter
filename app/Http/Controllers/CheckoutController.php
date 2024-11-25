@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Classes\ApiResponseClass;
+use App\Http\Requests\StoreCheckoutOneRequest;
 use App\Http\Requests\StoreCheckoutRequest;
 use App\Http\Requests\UpdateCheckoutRequest;
-use App\Http\Resources\CheckoutResource;
 use App\Interfaces\CheckoutRepositoryInterface;
 use App\Models\Checkout;
 use Exception;
@@ -62,9 +62,6 @@ class CheckoutController extends Controller
     }
 
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create(): JsonResponse
     {
         return ApiResponseClass::notImplement();
@@ -76,7 +73,8 @@ class CheckoutController extends Controller
      * @param Checkout|StoreCheckoutRequest $request
      * @return JsonResponse
      */
-    public function store(StoreCheckoutRequest $request): JsonResponse
+
+    public function storeMany(StoreCheckoutRequest $request): JsonResponse
     {
         try {
             $checkout = [
@@ -89,8 +87,37 @@ class CheckoutController extends Controller
             ];
             $id_product = $request->id_trolley;
 
-
             $data = $this->checkoutRepository->createMany($checkout, $id_product);
+            return ApiResponseClass::sendResponse($data, 'Checkout Create Successful');
+
+        } catch (Exception $exception) {
+            return ApiResponseClass::sendFail('Checkout Create Fail ' . $exception->getMessage(), 404);
+
+        }
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     * @param StoreCheckoutOneRequest $request
+     * @return JsonResponse
+     */
+    public function storeOne(StoreCheckoutOneRequest $request): JsonResponse
+    {
+        try {
+            $checkout = [
+                'id_user' => $request->id_user,
+                'total' => $request->total,
+                'payment_method' => $request->payment_method,
+                'payment_price' => $request->payment_price,
+                'delivery_method' => $request->delivery_method,
+                'delivery_price' => $request->delivery_price,
+            ];
+            $product = [
+                'id_product' => $request->id_product,
+                'type' => $request->type,
+                'qty' => $request->qty
+            ];
+            $data = $this->checkoutRepository->createOne($checkout, $product);
             return ApiResponseClass::sendResponse($data, 'Checkout Create Successful');
 
         } catch (Exception $exception) {
@@ -101,22 +128,17 @@ class CheckoutController extends Controller
     }
 
 
-    /**
-     * Display the specified resource.
-     */
     public function show($id): JsonResponse
     {
         try {
             $data = $this->checkoutRepository->findId($id);
-            return ApiResponseClass::sendResponse(new CheckoutResource($data), 'success', 201);
+            return ApiResponseClass::sendResponse($data, 'success', 201);
         } catch (Exception $exception) {
             return ApiResponseClass::sendFail('Checkout Delete Fail ' . $exception->getMessage(), 404);
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit($id): JsonResponse
     {
         return ApiResponseClass::notImplement();

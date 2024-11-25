@@ -6,6 +6,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Log;
 
 class StoreCheckoutRequest extends FormRequest
 {
@@ -31,12 +32,15 @@ class StoreCheckoutRequest extends FormRequest
             'payment_price'=>'required|integer',
             'delivery_method'=>'required|string',
             'delivery_price'=>'required|integer',
+            'id_product' => 'integer',
             'id_trolley' => 'required|array', // Ensure it's an array
             'id_trolley.*' => 'integer',     // Ensure each element is an integer
         ];
     }
     public function failedValidation(Validator  $validator)
     {
+        Log::error($validator->errors());
+
         throw new HttpResponseException(response()->json([
             'success'   => false,
             'message'   => 'Validation errors',

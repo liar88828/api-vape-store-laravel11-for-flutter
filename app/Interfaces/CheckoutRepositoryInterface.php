@@ -12,7 +12,7 @@ interface CheckoutRepositoryInterface
 
     public function findAllCheckout(int $id);
 
-    public function createSingle(array $checkout, array $id_trolley);
+    public function createOne(array $checkout, array $product);
 
     public function createMany(array $checkout, array $id_trolley);
 
